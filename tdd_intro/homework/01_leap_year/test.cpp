@@ -16,15 +16,15 @@ If your language provides a method in the standard library that does this look-u
 
 namespace
 {
-    bool is_multiple_of_4(int value)
+    bool is_multiple_of(int value, int factor)
     {
-        return value % 4 == 0;
+        return value % factor == 0;
     }
 }
 
 bool is_leap_year(int year)
 {
-    return is_multiple_of_4(year) && (year % 100 != 0);
+    return !is_multiple_of(year, 100) && is_multiple_of(year, 4);
 }
 
 TEST(LeapYear, is_leap_year_for_multiple_of_4)
