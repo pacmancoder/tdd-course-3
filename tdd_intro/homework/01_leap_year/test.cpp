@@ -20,11 +20,17 @@ namespace
     {
         return value % factor == 0;
     }
+
+    bool is_multiple_of_except(int value, int factor, int exceptional_factor)
+    {
+        return !is_multiple_of(value, exceptional_factor)
+               && is_multiple_of(value, factor);
+    }
 }
 
 bool is_leap_year(int year)
 {
-    return (!is_multiple_of(year, 100) && is_multiple_of(year, 4)) || is_multiple_of(year, 400);
+    return  is_multiple_of_except(year, 4, 100) || is_multiple_of(year, 400);
 }
 
 TEST(LeapYear, is_leap_year_for_multiple_of_4)
