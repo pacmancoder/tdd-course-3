@@ -31,3 +31,8 @@ TEST(LeapYear, is_leap_year_for_multiple_of_4)
 {
     ASSERT_TRUE(is_leap_year(4));
 }
+
+TEST(LeapYear, is_not_leap_year_for_multiple_of_100)
+{
+    ASSERT_FALSE(is_leap_year(100));
+}
