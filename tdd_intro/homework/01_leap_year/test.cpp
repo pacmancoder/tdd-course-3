@@ -24,7 +24,7 @@ namespace
 
 bool is_leap_year(int year)
 {
-    return !is_multiple_of(year, 100) && is_multiple_of(year, 4);
+    return (!is_multiple_of(year, 100) && is_multiple_of(year, 4)) || is_multiple_of(year, 400);
 }
 
 TEST(LeapYear, is_leap_year_for_multiple_of_4)
