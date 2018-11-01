@@ -14,10 +14,17 @@ If your language provides a method in the standard library that does this look-u
 
 #include <gtest/gtest.h>
 
+namespace
+{
+    bool is_multiple_of_4(int value)
+    {
+        return value % 4 == 0;
+    }
+}
 
 bool is_leap_year(int year)
 {
-    return year % 4 == 0;
+    return is_multiple_of_4(year);
 }
 
 TEST(LeapYear, is_leap_year_for_multiple_of_4)
