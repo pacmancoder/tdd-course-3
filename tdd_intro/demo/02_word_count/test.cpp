@@ -47,7 +47,10 @@ namespace Internal
 
     std::string next_word(const std::string& phrase, StringPos& current_pos)
     {
-        return "";
+        skip_whitespace(phrase, current_pos);
+        StringPos word_begin = current_pos;
+        skip_word(phrase, current_pos);
+        return phrase.substr(word_begin, current_pos - word_begin);
     }
 }
 
