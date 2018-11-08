@@ -19,20 +19,22 @@ such: 1
 #include <locale>
 
 using Words = std::vector<std::string>;
-using StringPos = size_t;
 
-
-
-StringPos skip_whitespace(const std::string& phrase, StringPos start_pos)
+namespace Internal
 {
-    auto default_locale = std::locale();
+    using StringPos = size_t;
 
-    while (std::isspace(phrase[start_pos], default_locale))
+    StringPos skip_whitespace(const std::string& phrase, StringPos start_pos)
     {
-        ++start_pos;
-    }
+        auto default_locale = std::locale();
 
-    return start_pos;
+        while (std::isspace(phrase[start_pos], default_locale))
+        {
+            ++start_pos;
+        }
+
+        return start_pos;
+    }
 }
 
 Words split_words(const std::string& phrase)
@@ -43,14 +45,14 @@ Words split_words(const std::string& phrase)
 
 TEST(WordCount, skip_whitespace_skips_single_whitespace)
 {
-    EXPECT_EQ(1, skip_whitespace(" test", 0));
-    EXPECT_EQ(6, skip_whitespace("test  none", 4));
+    EXPECT_EQ(1, Internal::skip_whitespace(" test", 0));
+    EXPECT_EQ(6, Internal::skip_whitespace("test  none", 4));
 }
 
 TEST(WordCount, skip_whitespace_no_whitespace_returns_start_pos)
 {
-    EXPECT_EQ(1, skip_whitespace("test", 1));
-    EXPECT_EQ(5, skip_whitespace("test none", 5));
+    EXPECT_EQ(1, Internal::skip_whitespace("test", 1));
+    EXPECT_EQ(5, Internal::skip_whitespace("test none", 5));
 }
 
 TEST(WordCount, split_of_single_word_returns_self_as_single_element)
