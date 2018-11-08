@@ -18,12 +18,13 @@ If your language provides a method in the standard library to perform the conver
 */
 
 const char TERNARY_BASE_CHAR = '0';
+const int TERNARY_MAX_EXPONENT = 2;
 
 int ternary_string_to_int(const std::string& value)
 {
     auto digit_exponent = value.front() - TERNARY_BASE_CHAR;
 
-    if (digit_exponent > 2)
+    if (digit_exponent > TERNARY_MAX_EXPONENT)
     {
         return 0;
     }
