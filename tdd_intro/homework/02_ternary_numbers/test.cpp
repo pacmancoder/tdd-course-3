@@ -93,3 +93,8 @@ TEST(TernaryNumbers, multi_digit_invalid_number_returns_0)
 {
     ASSERT_EQ(0, ternary_string_to_int("121x20100"));
 }
+
+TEST(TernaryNumbers, acceptance_test)
+{
+    ASSERT_EQ(302, ternary_string_to_int("102012"));
+}
