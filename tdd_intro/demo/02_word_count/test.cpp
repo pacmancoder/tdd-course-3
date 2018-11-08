@@ -18,7 +18,7 @@ such: 1
 #include <map>
 #include <locale>
 
-using Words = std::vector<std::string>;
+using WordCounts = std::map<std::string, size_t>;
 
 namespace Internal
 {
@@ -54,7 +54,7 @@ namespace Internal
     }
 }
 
-std::map<std::string, size_t> count_words(const std::string& phrase)
+WordCounts count_words(const std::string& phrase)
 {
     return {{phrase, 1}};
 }
@@ -154,7 +154,7 @@ TEST(WordCount, next_word_ignores_trailing_whitespaces)
 
 TEST(WordCount, count_words_returns_word_with_count_1_for_one_word_phrase)
 {
-    std::map<std::string, size_t> expected = {{ "hello", 1 }};
+    WordCounts expected = {{ "hello", 1 }};
 
     EXPECT_EQ(expected, count_words("hello"));
 }
