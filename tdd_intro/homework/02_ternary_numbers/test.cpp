@@ -20,6 +20,11 @@ If your language provides a method in the standard library to perform the conver
 const char TERNARY_BASE_CHAR = '0';
 const int TERNARY_MAX_EXPONENT = 2;
 
+int powi(int value, unsigned int exp)
+{
+    return 0;
+}
+
 int ternary_string_to_int(const std::string& value)
 {
     unsigned char digit_exponent = value.front() - TERNARY_BASE_CHAR;
@@ -32,6 +37,10 @@ int ternary_string_to_int(const std::string& value)
     return digit_exponent;
 }
 
+TEST(TernaryNumbers, powi_for_0_returns_1)
+{
+    ASSERT_EQ(1, powi(42, 0));
+}
 
 TEST(TernaryNumbers, single_char_equals_correct_integer)
 {
@@ -50,7 +59,7 @@ TEST(TernaryNumbers, invalid_special_char_lower_than_0_returns_0)
     ASSERT_EQ(0, ternary_string_to_int("/"));
 }
 
-TEST(TernaryNumbers, multi_digit_number_returns_integer)
+TEST(TernaryNumbers, DISABLED_multi_digit_number_returns_integer)
 {
     ASSERT_EQ(12321, ternary_string_to_int("121220100"));
 }
