@@ -44,6 +44,7 @@ Words split_words(const std::string& phrase)
 TEST(WordCount, skip_whitespace_skips_single_whitespace)
 {
     EXPECT_EQ(1, skip_whitespace(" test", 0));
+    EXPECT_EQ(6, skip_whitespace("test  none", 4));
 }
 
 TEST(WordCount, split_of_single_word_returns_self_as_single_element)
