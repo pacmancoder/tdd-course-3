@@ -16,3 +16,15 @@ The last place in a ternary number is the 1's place. The second to last is the 3
 
 If your language provides a method in the standard library to perform the conversion, pretend it doesn't exist and implement it yourself.
 */
+
+int ternary_string_to_int(const std::string& value)
+{
+    return -1;
+}
+
+
+TEST(TernaryNumbers, single_char_equals_correct_integer) {
+    ASSERT_EQ(0, ternary_string_to_int("0"));
+    ASSERT_EQ(1, ternary_string_to_int("1"));
+    ASSERT_EQ(2, ternary_string_to_int("2"));
+}
