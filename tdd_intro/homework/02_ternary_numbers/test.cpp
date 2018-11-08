@@ -21,7 +21,14 @@ const char TERNARY_BASE_CHAR = '0';
 
 int ternary_string_to_int(const std::string& value)
 {
-    return value.front() - TERNARY_BASE_CHAR;
+    auto digit_exponent = value.front() - TERNARY_BASE_CHAR;
+
+    if (digit_exponent > 2)
+    {
+        return 0;
+    }
+
+    return digit_exponent;
 }
 
 
