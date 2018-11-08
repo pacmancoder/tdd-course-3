@@ -36,7 +36,10 @@ namespace Internal
 
     void skip_word(const std::string& phrase, StringPos& start_pos)
     {
-
+        while (start_pos < phrase.size() && std::isalnum(phrase[start_pos], std::locale()))
+        {
+            ++start_pos;
+        }
     }
 }
 
@@ -93,7 +96,7 @@ TEST(WordCount, skip_word_for_single_word_returns_word_size)
     using namespace Internal;
 
     StringPos position = 0;
-    skip_whitespace("hello", position);
+    skip_word("hello", position);
     EXPECT_EQ(5, position);
 }
 
