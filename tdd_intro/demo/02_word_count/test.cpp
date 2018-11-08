@@ -56,7 +56,21 @@ namespace Internal
 
 WordCounts count_words(const std::string& phrase)
 {
-    return {{phrase, 1}};
+    Internal::StringPos current_pos = 0;
+    WordCounts word_counts;
+
+    for (;;)
+    {
+        auto last_word = Internal::next_word(phrase, current_pos);
+        if (last_word.empty())
+        {
+            break;
+        }
+
+        word_counts[last_word] += 1;
+    }
+
+    return word_counts;
 }
 
 
