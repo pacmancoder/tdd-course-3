@@ -181,3 +181,11 @@ TEST(WordCount, count_words_for_unique_words_return_words_map_with_count_1)
 
     EXPECT_EQ(expected, count_words("one two three"));
 }
+
+TEST(WordCount, count_words_for_repeating_words_icreaseses_count)
+{
+    WordCounts expected = {{ "one", 1 }, { "two", 3 }, { "three", 2 }};
+
+    EXPECT_EQ(expected, count_words("three one two two three two"));
+}
+
