@@ -19,7 +19,7 @@ If your language provides a method in the standard library to perform the conver
 
 int ternary_string_to_int(const std::string& value)
 {
-    return -1;
+    return value.front() - '0';
 }
 
 
