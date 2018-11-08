@@ -109,7 +109,22 @@ TEST(WordCount, skip_word_for_single_word_returns_word_size)
 TEST(WordCount, next_word_returns_same_word_and_set_pos_to_end)
 {
     using namespace Internal;
+
     StringPos position = 0;
     EXPECT_EQ("hello", next_word("hello", position));
     EXPECT_EQ(5, position);
 }
+
+TEST(WordCount, next_word_called_twice_returns_2_words_and_empty_string)
+{
+    using namespace Internal;
+
+    StringPos position = 0;
+    EXPECT_EQ("hello", next_word("hello world", position));
+    EXPECT_EQ(5, position);
+    EXPECT_EQ("world", next_word("hello world", position));
+    EXPECT_EQ(11, position);
+    EXPECT_EQ("", next_word("hello world", position));
+    EXPECT_EQ(11, position);
+}
+
