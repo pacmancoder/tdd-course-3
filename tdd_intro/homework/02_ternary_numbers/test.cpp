@@ -49,3 +49,8 @@ TEST(TernaryNumbers, invalid_special_char_lower_than_0_returns_0)
 {
     ASSERT_EQ(0, ternary_string_to_int("/"));
 }
+
+TEST(TernaryNumbers, multi_digit_number_returns_integer)
+{
+    ASSERT_EQ(12321, ternary_string_to_int("121220100"));
+}
