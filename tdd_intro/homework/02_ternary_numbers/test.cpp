@@ -26,23 +26,35 @@ int powi(int value, unsigned int exp)
     return exp != 0 ? value * powi(value, exp - 1) : 1;
 }
 
-int ternary_string_to_int(const std::string& value)
+int ternary_string_to_int_recursive(const std::string& value)
 {
     unsigned char digit_exponent = value.front() - TERNARY_BASE_CHAR;
 
     if (digit_exponent > TERNARY_MAX_EXPONENT)
     {
-        return 0;
+        return -1;
     }
 
     if (value.size() > 1)
     {
-        auto previous_digits_weight = ternary_string_to_int(value.substr(1));
+        auto previous_digits_weight = ternary_string_to_int_recursive(value.substr(1));
+
+        if (previous_digits_weight < 0)
+        {
+            return previous_digits_weight;
+        }
+
         auto current_digits_weight = digit_exponent * powi(TERNARY_DIGITS_COUNT, value.size() - 1);
         return current_digits_weight + previous_digits_weight;
     }
 
     return digit_exponent;
+}
+
+int ternary_string_to_int(const std::string& value)
+{
+    int num = ternary_string_to_int_recursive(value);
+    return num >= 0 ? num : 0;
 }
 
 TEST(TernaryNumbers, powi_for_0_returns_1)
@@ -75,4 +87,9 @@ TEST(TernaryNumbers, invalid_special_char_lower_than_0_returns_0)
 TEST(TernaryNumbers, multi_digit_number_returns_integer)
 {
     ASSERT_EQ(12321, ternary_string_to_int("121220100"));
+}
+
+TEST(TernaryNumbers, multi_digit_invalid_number_returns_0)
+{
+    ASSERT_EQ(0, ternary_string_to_int("121x20100"));
 }
