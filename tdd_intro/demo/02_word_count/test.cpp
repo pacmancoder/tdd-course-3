@@ -19,12 +19,25 @@ such: 1
 
 using Words = std::vector<std::string>;
 
+
+size_t skip_whitespace(const std::string& phrase, size_t start_pos)
+{
+    return start_pos;
+}
+
 Words split_words(const std::string& phrase)
 {
     return { phrase };
 }
 
-TEST(WordCount, split_of_single_word_returns_self_as_single_element) {
+
+TEST(WordCount, skip_whitespace_skips_single_whitespace)
+{
+    EXPECT_EQ(1, skip_whitespace(" test", 0));
+}
+
+TEST(WordCount, split_of_single_word_returns_self_as_single_element)
+{
     Words expected = { "hello" };
     EXPECT_EQ(expected, split_words("hello"));
 }
