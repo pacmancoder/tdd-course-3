@@ -44,11 +44,11 @@ namespace Internal
     {
         skip_while(phrase, start_pos, std::isalnum);
     }
-}
 
-Words split_words(const std::string& phrase)
-{
-    return { phrase };
+    std::string next_word(const std::string& phrase, StringPos& current_pos)
+    {
+        return "";
+    }
 }
 
 
@@ -103,8 +103,10 @@ TEST(WordCount, skip_word_for_single_word_returns_word_size)
     EXPECT_EQ(5, position);
 }
 
-TEST(WordCount, split_of_single_word_returns_self_as_single_element)
+TEST(WordCount, next_word_returns_same_word_and_set_pos_to_end)
 {
-    Words expected = { "hello" };
-    EXPECT_EQ(expected, split_words("hello"));
+    using namespace Internal;
+    StringPos position = 0;
+    EXPECT_EQ("hello", next_word("hello", position));
+    EXPECT_EQ(5, position);
 }
