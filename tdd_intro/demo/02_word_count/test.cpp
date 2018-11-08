@@ -24,7 +24,7 @@ namespace Internal
 {
     using StringPos = size_t;
 
-    StringPos skip_whitespace(const std::string& phrase, StringPos start_pos)
+    void skip_whitespace(const std::string& phrase, StringPos& start_pos)
     {
         auto default_locale = std::locale();
 
@@ -32,8 +32,6 @@ namespace Internal
         {
             ++start_pos;
         }
-
-        return start_pos;
     }
 }
 
@@ -45,24 +43,44 @@ Words split_words(const std::string& phrase)
 
 TEST(WordCount, skip_whitespace_skips_single_whitespace)
 {
-    EXPECT_EQ(1, Internal::skip_whitespace(" test", 0));
-    EXPECT_EQ(6, Internal::skip_whitespace("test  none", 4));
+    using namespace Internal;
+
+    StringPos position = 0;
+    skip_whitespace(" test", position);
+    EXPECT_EQ(1, position);
+    position = 4;
+    skip_whitespace("test  none", position);
+    EXPECT_EQ(6, position);
 }
 
 TEST(WordCount, skip_whitespace_no_whitespace_returns_start_pos)
 {
-    EXPECT_EQ(1, Internal::skip_whitespace("test", 1));
-    EXPECT_EQ(5, Internal::skip_whitespace("test none", 5));
+    using namespace Internal;
+
+    StringPos position = 1;
+    skip_whitespace("test", position);
+    EXPECT_EQ(1, position);
+    position = 5;
+    skip_whitespace("test none", position);
+    EXPECT_EQ(5, position);
 }
 
 TEST(WordCount, skip_whitespace_whitespace_on_end_returns_phrase_size)
 {
-    EXPECT_EQ(4, Internal::skip_whitespace("    ", 2));
+    using namespace Internal;
+
+    StringPos position = 2;
+    skip_whitespace("    ", position);
+    EXPECT_EQ(4, position);
 }
 
 TEST(WordCount, skip_whitespace_out_of_bounds_pos_does_not_changes)
 {
-    EXPECT_EQ(4, Internal::skip_whitespace("hi", 4));
+    using namespace Internal;
+
+    StringPos position = 4;
+    skip_whitespace("hi", position);
+    EXPECT_EQ(4, position);
 }
 
 TEST(WordCount, split_of_single_word_returns_self_as_single_element)
