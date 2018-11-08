@@ -129,3 +129,19 @@ TEST(WordCount, next_word_called_twice_returns_2_words_and_empty_string)
     EXPECT_EQ("", next_word(phrase, position));
     EXPECT_EQ(11, position);
 }
+
+
+TEST(WordCount, next_word_ignores_trailing_whitespaces)
+{
+    using namespace Internal;
+
+    const std::string phrase = "   hello world   ";
+
+    StringPos position = 0;
+    EXPECT_EQ("hello", next_word(phrase, position));
+    EXPECT_EQ(8, position);
+    EXPECT_EQ("world", next_word(phrase, position));
+    EXPECT_EQ(14, position);
+    EXPECT_EQ("", next_word(phrase, position));
+    EXPECT_EQ(17, position);
+}
