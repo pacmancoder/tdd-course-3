@@ -16,12 +16,18 @@ such: 1
 #include <gtest/gtest.h>
 #include <string>
 #include <map>
+#include <locale>
 
 using Words = std::vector<std::string>;
 
 
 size_t skip_whitespace(const std::string& phrase, size_t start_pos)
 {
+    while (!std::isalnum(phrase[start_pos], std::locale()))
+    {
+        ++start_pos;
+    }
+
     return start_pos;
 }
 
