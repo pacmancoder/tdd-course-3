@@ -25,8 +25,14 @@ int ternary_string_to_int(const std::string& value)
 }
 
 
-TEST(TernaryNumbers, single_char_equals_correct_integer) {
+TEST(TernaryNumbers, single_char_equals_correct_integer)
+{
     ASSERT_EQ(0, ternary_string_to_int("0"));
     ASSERT_EQ(1, ternary_string_to_int("1"));
     ASSERT_EQ(2, ternary_string_to_int("2"));
+}
+
+TEST(TernaryNumbers, invalid_single_char_returns_0)
+{
+    ASSERT_EQ(0, ternary_string_to_int("q"));
 }
