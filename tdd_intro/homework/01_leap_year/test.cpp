@@ -13,3 +13,37 @@ If your language provides a method in the standard library that does this look-u
 */
 
 #include <gtest/gtest.h>
+
+namespace
+{
+    bool is_multiple_of(int value, int factor)
+    {
+        return value % factor == 0;
+    }
+
+    bool is_multiple_of_except(int value, int factor, int exceptional_factor)
+    {
+        return !is_multiple_of(value, exceptional_factor)
+               && is_multiple_of(value, factor);
+    }
+}
+
+bool is_leap_year(int year)
+{
+    return  is_multiple_of_except(year, 4, 100) || is_multiple_of(year, 400);
+}
+
+TEST(LeapYear, is_leap_year_for_multiple_of_4)
+{
+    ASSERT_TRUE(is_leap_year(4));
+}
+
+TEST(LeapYear, is_not_leap_year_for_multiple_of_100)
+{
+    ASSERT_FALSE(is_leap_year(100));
+}
+
+TEST(LeapYear, is_leap_year_for_multiple_of_400)
+{
+    ASSERT_TRUE(is_leap_year(400));
+}
