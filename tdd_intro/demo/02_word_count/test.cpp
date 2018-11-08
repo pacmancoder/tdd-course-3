@@ -33,6 +33,11 @@ namespace Internal
             ++start_pos;
         }
     }
+
+    void skip_word(const std::string& phrase, StringPos& start_pos)
+    {
+
+    }
 }
 
 Words split_words(const std::string& phrase)
@@ -81,6 +86,15 @@ TEST(WordCount, skip_whitespace_out_of_bounds_pos_does_not_changes)
     StringPos position = 4;
     skip_whitespace("hi", position);
     EXPECT_EQ(4, position);
+}
+
+TEST(WordCount, skip_word_for_single_word_returns_word_size)
+{
+    using namespace Internal;
+
+    StringPos position = 0;
+    skip_whitespace("hello", position);
+    EXPECT_EQ(5, position);
 }
 
 TEST(WordCount, split_of_single_word_returns_self_as_single_element)
