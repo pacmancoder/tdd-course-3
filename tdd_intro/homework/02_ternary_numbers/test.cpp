@@ -27,7 +27,7 @@ int powi(int value, unsigned int exp)
         return 1;
     }
 
-    return 0;
+    return value * powi(value, exp - 1);
 }
 
 int ternary_string_to_int(const std::string& value)
