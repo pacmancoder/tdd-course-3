@@ -22,7 +22,7 @@ const int TERNARY_MAX_EXPONENT = 2;
 
 int ternary_string_to_int(const std::string& value)
 {
-    auto digit_exponent = value.front() - TERNARY_BASE_CHAR;
+    unsigned char digit_exponent = value.front() - TERNARY_BASE_CHAR;
 
     if (digit_exponent > TERNARY_MAX_EXPONENT)
     {
