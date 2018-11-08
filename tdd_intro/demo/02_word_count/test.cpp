@@ -189,3 +189,19 @@ TEST(WordCount, count_words_for_repeating_words_icreaseses_count)
     EXPECT_EQ(expected, count_words("three one two two three two"));
 }
 
+TEST(WordCount, count_words_acceptance_test)
+{
+    WordCounts expected = {
+        { "olly", 3 },
+        { "in", 2 },
+        { "come", 1 },
+        { "free", 1 },
+        { "please", 2 },
+        { "let", 1 },
+        { "it", 1 },
+        { "be", 1 },
+        { "manner", 1 },
+        { "such", 1 }};
+
+    EXPECT_EQ(expected, count_words("olly olly in come free please please let it be in such manner olly"));
+}
