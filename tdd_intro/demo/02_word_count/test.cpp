@@ -17,3 +17,12 @@ such: 1
 #include <string>
 #include <map>
 
+std::vector<std::string> split_words(const std::string&)
+{
+    return {};
+}
+
+TEST(WordCount, split_of_single_word_returns_self_as_single_element) {
+    std::vector<std::string> expected = {"hello"};
+    EXPECT_EQ(expected, split_words("hello"));
+}
