@@ -158,3 +158,10 @@ TEST(WordCount, count_words_returns_word_with_count_1_for_one_word_phrase)
 
     EXPECT_EQ(expected, count_words("hello"));
 }
+
+TEST(WordCount, count_words_for_unique_words_return_words_map_with_count_1)
+{
+    WordCounts expected = {{ "one", 1 }, { "two", 1 }, { "three", 1 }};
+
+    EXPECT_EQ(expected, count_words("one two three"));
+}
