@@ -19,11 +19,15 @@ such: 1
 #include <locale>
 
 using Words = std::vector<std::string>;
+using StringPos = size_t;
 
 
-size_t skip_whitespace(const std::string& phrase, size_t start_pos)
+
+StringPos skip_whitespace(const std::string& phrase, StringPos start_pos)
 {
-    while (!std::isalnum(phrase[start_pos], std::locale()))
+    auto default_locale = std::locale();
+
+    while (std::isspace(phrase[start_pos], default_locale))
     {
         ++start_pos;
     }
