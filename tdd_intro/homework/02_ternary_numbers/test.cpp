@@ -44,3 +44,8 @@ TEST(TernaryNumbers, invalid_single_char_returns_0)
 {
     ASSERT_EQ(0, ternary_string_to_int("q"));
 }
+
+TEST(TernaryNumbers, invalid_special_char_lower_than_0_returns_0)
+{
+    ASSERT_EQ(0, ternary_string_to_int("/"));
+}
