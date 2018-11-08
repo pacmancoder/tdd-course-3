@@ -19,6 +19,7 @@ If your language provides a method in the standard library to perform the conver
 
 const char TERNARY_BASE_CHAR = '0';
 const int TERNARY_MAX_EXPONENT = 2;
+const int TERNARY_DIGITS_COUNT = 3;
 
 int powi(int value, unsigned int exp)
 {
@@ -36,7 +37,9 @@ int ternary_string_to_int(const std::string& value)
 
     if (value.size() > 1)
     {
-        return digit_exponent * powi(3, value.size() - 1) + ternary_string_to_int(value.substr(1));
+        auto previous_digits_weight = ternary_string_to_int(value.substr(1));
+        auto current_digits_weight = digit_exponent * powi(TERNARY_DIGITS_COUNT, value.size() - 1);
+        return current_digits_weight + previous_digits_weight;
     }
 
     return digit_exponent;
