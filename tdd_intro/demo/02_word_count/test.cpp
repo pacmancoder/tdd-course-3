@@ -54,6 +54,11 @@ namespace Internal
     }
 }
 
+std::map<std::string, size_t> count_words(const std::string&)
+{
+    return {};
+}
+
 
 TEST(WordCount, skip_whitespace_skips_single_whitespace)
 {
@@ -144,4 +149,12 @@ TEST(WordCount, next_word_ignores_trailing_whitespaces)
     EXPECT_EQ(14, position);
     EXPECT_EQ("", next_word(phrase, position));
     EXPECT_EQ(17, position);
+}
+
+
+TEST(WordCount, count_words_returns_word_with_count_1_for_one_word_phrase)
+{
+    std::map<std::string, size_t> expected = {{ "hello", 1 }};
+
+    EXPECT_EQ(expected, count_words("hello"));
 }
