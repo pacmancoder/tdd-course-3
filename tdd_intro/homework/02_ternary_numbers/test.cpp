@@ -47,6 +47,11 @@ TEST(TernaryNumbers, powi_for_0_returns_1)
     ASSERT_EQ(1, powi(42, 0));
 }
 
+TEST(TernaryNumbers, powi_for_2_in_exp_3_returns_8)
+{
+    ASSERT_EQ(8, powi(2, 3));
+}
+
 TEST(TernaryNumbers, single_char_equals_correct_integer)
 {
     ASSERT_EQ(0, ternary_string_to_int("0"));
