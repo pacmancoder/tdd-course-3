@@ -22,6 +22,11 @@ const int TERNARY_MAX_EXPONENT = 2;
 
 int powi(int value, unsigned int exp)
 {
+    if (exp == 0)
+    {
+        return 1;
+    }
+
     return 0;
 }
 
