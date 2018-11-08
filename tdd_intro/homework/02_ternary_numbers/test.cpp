@@ -34,6 +34,11 @@ int ternary_string_to_int(const std::string& value)
         return 0;
     }
 
+    if (value.size() > 1)
+    {
+        return digit_exponent * powi(3, value.size() - 1) + ternary_string_to_int(value.substr(1));
+    }
+
     return digit_exponent;
 }
 
@@ -64,7 +69,7 @@ TEST(TernaryNumbers, invalid_special_char_lower_than_0_returns_0)
     ASSERT_EQ(0, ternary_string_to_int("/"));
 }
 
-TEST(TernaryNumbers, DISABLED_multi_digit_number_returns_integer)
+TEST(TernaryNumbers, multi_digit_number_returns_integer)
 {
     ASSERT_EQ(12321, ternary_string_to_int("121220100"));
 }
