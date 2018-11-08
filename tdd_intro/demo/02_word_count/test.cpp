@@ -119,12 +119,13 @@ TEST(WordCount, next_word_called_twice_returns_2_words_and_empty_string)
 {
     using namespace Internal;
 
+    const std::string phrase = "hello world";
+
     StringPos position = 0;
-    EXPECT_EQ("hello", next_word("hello world", position));
+    EXPECT_EQ("hello", next_word(phrase, position));
     EXPECT_EQ(5, position);
-    EXPECT_EQ("world", next_word("hello world", position));
+    EXPECT_EQ("world", next_word(phrase, position));
     EXPECT_EQ(11, position);
-    EXPECT_EQ("", next_word("hello world", position));
+    EXPECT_EQ("", next_word(phrase, position));
     EXPECT_EQ(11, position);
 }
-
