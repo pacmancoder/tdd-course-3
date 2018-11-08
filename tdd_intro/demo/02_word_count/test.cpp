@@ -17,9 +17,9 @@ such: 1
 #include <string>
 #include <map>
 
-std::vector<std::string> split_words(const std::string&)
+std::vector<std::string> split_words(const std::string& phrase)
 {
-    return {};
+    return { phrase };
 }
 
 TEST(WordCount, split_of_single_word_returns_self_as_single_element) {
