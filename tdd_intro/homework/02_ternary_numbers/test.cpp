@@ -22,12 +22,7 @@ const int TERNARY_MAX_EXPONENT = 2;
 
 int powi(int value, unsigned int exp)
 {
-    if (exp == 0)
-    {
-        return 1;
-    }
-
-    return value * powi(value, exp - 1);
+    return exp != 0 ? value * powi(value, exp - 1) : 1;
 }
 
 int ternary_string_to_int(const std::string& value)
