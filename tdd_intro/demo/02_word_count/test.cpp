@@ -23,23 +23,26 @@ using Words = std::vector<std::string>;
 namespace Internal
 {
     using StringPos = size_t;
+    using CharKindPredicate = bool (*)(char, const std::locale&);
 
-    void skip_whitespace(const std::string& phrase, StringPos& start_pos)
+    void skip_while(const std::string& phrase, StringPos& start_pos, CharKindPredicate predicate)
     {
         auto default_locale = std::locale();
 
-        while (start_pos < phrase.size() && std::isspace(phrase[start_pos], default_locale))
+        while (start_pos < phrase.size() && predicate(phrase[start_pos], default_locale))
         {
             ++start_pos;
         }
     }
 
+    void skip_whitespace(const std::string& phrase, StringPos& start_pos)
+    {
+        skip_while(phrase, start_pos, std::isspace);
+    }
+
     void skip_word(const std::string& phrase, StringPos& start_pos)
     {
-        while (start_pos < phrase.size() && std::isalnum(phrase[start_pos], std::locale()))
-        {
-            ++start_pos;
-        }
+        skip_while(phrase, start_pos, std::isalnum);
     }
 }
 
