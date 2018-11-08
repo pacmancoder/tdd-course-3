@@ -17,9 +17,11 @@ The last place in a ternary number is the 1's place. The second to last is the 3
 If your language provides a method in the standard library to perform the conversion, pretend it doesn't exist and implement it yourself.
 */
 
+const char TERNARY_BASE_CHAR = '0';
+
 int ternary_string_to_int(const std::string& value)
 {
-    return value.front() - '0';
+    return value.front() - TERNARY_BASE_CHAR;
 }
 
 
