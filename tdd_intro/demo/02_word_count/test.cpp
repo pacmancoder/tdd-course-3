@@ -28,7 +28,7 @@ namespace Internal
     {
         auto default_locale = std::locale();
 
-        while (std::isspace(phrase[start_pos], default_locale))
+        while (start_pos < phrase.size() && std::isspace(phrase[start_pos], default_locale))
         {
             ++start_pos;
         }
