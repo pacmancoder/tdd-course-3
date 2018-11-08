@@ -55,6 +55,11 @@ TEST(WordCount, skip_whitespace_no_whitespace_returns_start_pos)
     EXPECT_EQ(5, Internal::skip_whitespace("test none", 5));
 }
 
+TEST(WordCount, skip_whitespace_whitespace_on_end_returns_phrase_size)
+{
+    EXPECT_EQ(4, Internal::skip_whitespace("    ", 4));
+}
+
 TEST(WordCount, split_of_single_word_returns_self_as_single_element)
 {
     Words expected = { "hello" };
