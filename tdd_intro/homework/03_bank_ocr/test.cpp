@@ -125,6 +125,7 @@ class Display
 {
 public:
     Display(std::initializer_list<std::string> lines);
+    Display(Lines&& lines) : lines_(std::move(lines)) {};
 
     Digit operator[](size_t index) const;
 
@@ -142,7 +143,30 @@ public:
         inputStream_(std::forward<InputStream>(inputStream)) {}
 
     template<class OutputStream>
-    void parse(OutputStream& outputStream) {};
+    void parse(OutputStream& outputStream)
+    {
+        bool isFirstEntry = true;
+        while(!inputStream_.eof())
+        {
+            Lines lines;
+
+            std::getline(inputStream_, lines[0]);
+            std::getline(inputStream_, lines[1]);
+            std::getline(inputStream_, lines[2]);
+
+            if (!isFirstEntry)
+            {
+                outputStream << std::endl;
+            }
+
+            outputStream
+                    << std::setw(DIGITS_ON_DISPLAY)
+                    << std::setfill('0')
+                    << Display(std::move(lines)).parse();
+
+            isFirstEntry = false;
+        }
+    }
 
 private:
     InputStream inputStream_;
@@ -391,7 +415,6 @@ TEST(BankOCR, OCRStreamParsedCorrectly)
             << "|_ |_ |_ |_ |_ |_ |_ |_ |_ " << std::endl
             << " _| _| _| _| _| _| _| _| _|";
 
-    OCRStreamParser<decltype(inputStream)> parser(std::move(inputStream));
 
     std::stringstream expectedOutputStream;
     expectedOutputStream
@@ -399,7 +422,10 @@ TEST(BankOCR, OCRStreamParsedCorrectly)
             << "000000000" << std::endl
             << "555555555";
 
+    OCRStreamParser<decltype(inputStream)> parser(std::move(inputStream));
     std::stringstream actualOutputStream;
+    parser.parse(actualOutputStream);
+
     EXPECT_EQ(expectedOutputStream.str(), actualOutputStream.str());
 
 }
