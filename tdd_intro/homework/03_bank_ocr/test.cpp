@@ -242,7 +242,7 @@ bool operator==(const Digit& lhs, const Digit& rhs)
 
 bool operator!=(const Digit& lhs, const Digit& rhs)
 {
-    return false;
+    return !(lhs == rhs);
 }
 
 TEST(BankOCR, TwoDigitsAreEqual)
