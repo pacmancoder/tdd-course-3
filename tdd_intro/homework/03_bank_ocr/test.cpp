@@ -242,7 +242,7 @@ unsigned char Digit::parse() const
         }
     }
 
-    return 255;
+    throw ParsingException();
 }
 
 bool operator==(const Digit& lhs, const Digit& rhs)
@@ -291,5 +291,5 @@ TEST(BankOCR, SingleDigitParsedCorrectly)
 
 TEST(BankOCR, SingleDigitIsNotParsed)
 {
-    EXPECT_THROW(Digit({"123", "456", "789"}), ParsingException);
+    EXPECT_THROW(Digit({"123", "456", "789"}).parse(), ParsingException);
 }
