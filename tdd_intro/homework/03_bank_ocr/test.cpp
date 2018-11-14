@@ -176,55 +176,49 @@ std::array<Digit, DIGITS_COUNT> DIGITS =
      }
 }};
 
-const Display s_displayAll0 = { " _  _  _  _  _  _  _  _  _ ",
-                                "| || || || || || || || || |",
-                                "|_||_||_||_||_||_||_||_||_|"
-};
-
-const Display s_displayAll1 = { "                           ",
-                                "  |  |  |  |  |  |  |  |  |",
-                                "  |  |  |  |  |  |  |  |  |"
-};
-
-const Display s_displayAll2 = {  " _  _  _  _  _  _  _  _  _ ",
-                                 " _| _| _| _| _| _| _| _| _|",
-                                 "|_ |_ |_ |_ |_ |_ |_ |_ |_ "
-};
-
-const Display s_displayAll3 = { " _  _  _  _  _  _  _  _  _ ",
-                                " _| _| _| _| _| _| _| _| _|",
-                                " _| _| _| _| _| _| _| _| _|"
-};
-
-const Display s_displayAll4 = { "                           ",
-                                "|_||_||_||_||_||_||_||_||_|",
-                                "  |  |  |  |  |  |  |  |  |"
-};
-
-const Display s_displayAll5 = { " _  _  _  _  _  _  _  _  _ ",
-                                "|_ |_ |_ |_ |_ |_ |_ |_ |_ ",
-                                " _| _| _| _| _| _| _| _| _|"
-};
-
-const Display s_displayAll6 = { " _  _  _  _  _  _  _  _  _ ",
-                                "|_ |_ |_ |_ |_ |_ |_ |_ |_ ",
-                                "|_||_||_||_||_||_||_||_||_|"
-};
-
-const Display s_displayAll7 = { " _  _  _  _  _  _  _  _  _ ",
-                                "  |  |  |  |  |  |  |  |  |",
-                                "  |  |  |  |  |  |  |  |  |"
-};
-
-const Display s_displayAll8 = { " _  _  _  _  _  _  _  _  _ ",
-                                "|_||_||_||_||_||_||_||_||_|",
-                                "|_||_||_||_||_||_||_||_||_|"
-};
-
-const Display s_displayAll9 = { " _  _  _  _  _  _  _  _  _ ",
-                                "|_||_||_||_||_||_||_||_||_|",
-                                " _| _| _| _| _| _| _| _| _|"
-};
+const std::array<Display, DIGITS_COUNT> DISPLAY_REPEATABLE =
+{{
+     { " _  _  _  _  _  _  _  _  _ ",
+       "| || || || || || || || || |",
+       "|_||_||_||_||_||_||_||_||_|"
+     },
+     { "                           ",
+       "  |  |  |  |  |  |  |  |  |",
+       "  |  |  |  |  |  |  |  |  |"
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       " _| _| _| _| _| _| _| _| _|",
+       "|_ |_ |_ |_ |_ |_ |_ |_ |_ "
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       " _| _| _| _| _| _| _| _| _|",
+       " _| _| _| _| _| _| _| _| _|"
+     },
+     { "                           ",
+       "|_||_||_||_||_||_||_||_||_|",
+       "  |  |  |  |  |  |  |  |  |"
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       "|_ |_ |_ |_ |_ |_ |_ |_ |_ ",
+       " _| _| _| _| _| _| _| _| _|"
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       "|_ |_ |_ |_ |_ |_ |_ |_ |_ ",
+       "|_||_||_||_||_||_||_||_||_|"
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       "  |  |  |  |  |  |  |  |  |",
+       "  |  |  |  |  |  |  |  |  |"
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       "|_||_||_||_||_||_||_||_||_|",
+       "|_||_||_||_||_||_||_||_||_|"
+     },
+     { " _  _  _  _  _  _  _  _  _ ",
+       "|_||_||_||_||_||_||_||_||_|",
+       " _| _| _| _| _| _| _| _| _|"
+     }
+}};
 
 const Display DISPLAY_123456789 = { "    _  _     _  _  _  _  _ ",
                                      "  | _| _||_||_ |_   ||_||_|",
@@ -348,16 +342,16 @@ TEST(BankOCR, DisplayCanBeDividedOnSeparateDigits)
     EXPECT_EQ(DISPLAY_123456789[8], DIGITS[9]);
 }
 
-TEST(BankOCR, DisplayCanParseItsValues)
+TEST(BankOCR, DisplayCanParseRepeatableValues)
 {
-    EXPECT_EQ(0, s_displayAll0.parse());
-    EXPECT_EQ(111111111, s_displayAll1.parse());
-    EXPECT_EQ(222222222, s_displayAll2.parse());
-    EXPECT_EQ(333333333, s_displayAll3.parse());
-    EXPECT_EQ(444444444, s_displayAll4.parse());
-    EXPECT_EQ(555555555, s_displayAll5.parse());
-    EXPECT_EQ(666666666, s_displayAll6.parse());
-    EXPECT_EQ(777777777, s_displayAll7.parse());
-    EXPECT_EQ(888888888, s_displayAll8.parse());
-    EXPECT_EQ(999999999, s_displayAll9.parse());
+    EXPECT_EQ(        0, DISPLAY_REPEATABLE[0].parse());
+    EXPECT_EQ(111111111, DISPLAY_REPEATABLE[1].parse());
+    EXPECT_EQ(222222222, DISPLAY_REPEATABLE[2].parse());
+    EXPECT_EQ(333333333, DISPLAY_REPEATABLE[3].parse());
+    EXPECT_EQ(444444444, DISPLAY_REPEATABLE[4].parse());
+    EXPECT_EQ(555555555, DISPLAY_REPEATABLE[5].parse());
+    EXPECT_EQ(666666666, DISPLAY_REPEATABLE[6].parse());
+    EXPECT_EQ(777777777, DISPLAY_REPEATABLE[7].parse());
+    EXPECT_EQ(888888888, DISPLAY_REPEATABLE[8].parse());
+    EXPECT_EQ(999999999, DISPLAY_REPEATABLE[9].parse());
 }
