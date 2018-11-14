@@ -89,9 +89,16 @@ Example input and output
 
 const unsigned short g_digitLen = 3;
 const unsigned short g_linesInDigit = 3;
-struct Digit
+
+class Digit
 {
-    std::string lines[g_linesInDigit];
+public:
+    Digit(std::initializer_list<std::string> lines);
+
+    unsigned char parse() const;
+
+private:
+    std::string lines_[g_linesInDigit];
 };
 
 const unsigned short g_digitsOnDisplay = 9;
@@ -195,3 +202,28 @@ const Display s_display123456789 = { "    _  _     _  _  _  _  _ ",
                                      "  | _| _||_||_ |_   ||_||_|",
                                      "  ||_  _|  | _||_|  ||_| _|"
 };
+
+
+Digit::Digit(std::initializer_list<std::string> lines) :
+    lines_()
+{
+}
+
+unsigned char Digit::parse() const
+{
+    return 255;
+}
+
+TEST(BankOCR, SingleDigitParsing)
+{
+    EXPECT_EQ(0, s_digit0.parse());
+    EXPECT_EQ(1, s_digit1.parse());
+    EXPECT_EQ(2, s_digit2.parse());
+    EXPECT_EQ(3, s_digit3.parse());
+    EXPECT_EQ(4, s_digit4.parse());
+    EXPECT_EQ(5, s_digit5.parse());
+    EXPECT_EQ(6, s_digit6.parse());
+    EXPECT_EQ(7, s_digit7.parse());
+    EXPECT_EQ(8, s_digit8.parse());
+    EXPECT_EQ(9, s_digit9.parse());
+}
