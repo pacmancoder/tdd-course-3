@@ -92,6 +92,8 @@ Example input and output
 const unsigned short DIGIT_LENGTH = 3;
 const unsigned short LINES_IN_DIGIT = 3;
 
+using Lines = std::array<std::string, LINES_IN_DIGIT>;
+
 class ParsingException : public std::exception
 {
 public:
@@ -111,7 +113,7 @@ public:
     friend bool operator!=(const Digit& lhs, const Digit& rhs);
 
 private:
-    std::array<std::string, LINES_IN_DIGIT> lines_;
+    Lines lines_;
 };
 
 const unsigned short DIGITS_ON_DISPLAY = 9;
@@ -125,7 +127,7 @@ public:
     Digit operator[](size_t index) const;
 
 private:
-    std::array<std::string, LINES_IN_DIGIT> lines_;
+    Lines lines_;
 };
 
 std::array<Digit, DIGITS_COUNT> DIGITS =
@@ -222,21 +224,27 @@ const Display s_displayAll9 = { " _  _  _  _  _  _  _  _  _ ",
                                 " _| _| _| _| _| _| _| _| _|"
 };
 
-const Display s_display123456789 = { "    _  _     _  _  _  _  _ ",
+const Display DISPLAY_123456789 = { "    _  _     _  _  _  _  _ ",
                                      "  | _| _||_||_ |_   ||_||_|",
                                      "  ||_  _|  | _||_|  ||_| _|"
 };
 
+Lines InitializerListToLines(std::initializer_list<std::string> linesList)
+{
+    Lines lines = {};
+
+    size_t i = 0;
+    for (const auto& line : linesList)
+    {
+        lines[i++] = line;
+    }
+
+    return lines;
+}
+
 
 Digit::Digit(std::initializer_list<std::string> lines) :
-    lines_()
-{
-    size_t i = 0;
-    for (const auto& line : lines)
-    {
-        lines_[i++] = line;
-    }
-}
+    lines_(InitializerListToLines(lines)) {}
 
 unsigned char Digit::parse() const
 {
@@ -265,14 +273,7 @@ bool operator!=(const Digit& lhs, const Digit& rhs)
 }
 
 Display::Display(std::initializer_list<std::string> lines) :
-    lines_()
-{
-    size_t i = 0;
-    for (const auto& line : lines)
-    {
-        lines_[i++] = line;
-    }
-}
+    lines_(InitializerListToLines(lines)) {}
 
 Digit Display::operator[](size_t index) const
 {
@@ -321,13 +322,13 @@ TEST(BankOCR, SingleDigitIsNotParsed)
 
 TEST(BankOCR, DisplayCanBeDividedOnSeparateDigits)
 {
-    EXPECT_EQ(s_display123456789[0], DIGITS[1]);
-    EXPECT_EQ(s_display123456789[1], DIGITS[2]);
-    EXPECT_EQ(s_display123456789[2], DIGITS[3]);
-    EXPECT_EQ(s_display123456789[3], DIGITS[4]);
-    EXPECT_EQ(s_display123456789[4], DIGITS[5]);
-    EXPECT_EQ(s_display123456789[5], DIGITS[6]);
-    EXPECT_EQ(s_display123456789[6], DIGITS[7]);
-    EXPECT_EQ(s_display123456789[7], DIGITS[8]);
-    EXPECT_EQ(s_display123456789[8], DIGITS[9]);
+    EXPECT_EQ(DISPLAY_123456789[0], DIGITS[1]);
+    EXPECT_EQ(DISPLAY_123456789[1], DIGITS[2]);
+    EXPECT_EQ(DISPLAY_123456789[2], DIGITS[3]);
+    EXPECT_EQ(DISPLAY_123456789[3], DIGITS[4]);
+    EXPECT_EQ(DISPLAY_123456789[4], DIGITS[5]);
+    EXPECT_EQ(DISPLAY_123456789[5], DIGITS[6]);
+    EXPECT_EQ(DISPLAY_123456789[6], DIGITS[7]);
+    EXPECT_EQ(DISPLAY_123456789[7], DIGITS[8]);
+    EXPECT_EQ(DISPLAY_123456789[8], DIGITS[9]);
 }
