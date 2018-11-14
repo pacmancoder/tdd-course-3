@@ -100,6 +100,7 @@ public:
 
 public:
     friend bool operator==(const Digit& lhs, const Digit& rhs);
+    friend bool operator!=(const Digit& lhs, const Digit& rhs);
 
 private:
     std::string lines_[g_linesInDigit];
@@ -238,6 +239,12 @@ bool operator==(const Digit& lhs, const Digit& rhs)
             && lhs.lines_[2] == rhs.lines_[2];
 }
 
+
+bool operator!=(const Digit& lhs, const Digit& rhs)
+{
+    return false;
+}
+
 TEST(BankOCR, TwoDigitsAreEqual)
 {
     Digit lhs({"|-|", "-|-", "   "});
@@ -245,6 +252,15 @@ TEST(BankOCR, TwoDigitsAreEqual)
 
     EXPECT_EQ(lhs, rhs);
 }
+
+TEST(BankOCR, TwoDigitsAreNotEqual)
+{
+    Digit lhs({"|--", "-|-", "   "});
+    Digit rhs({"|-|", "-|-", " | "});
+
+    EXPECT_NE(lhs, rhs);
+}
+
 
 TEST(BankOCR, DISABLED_SingleDigitParsedCorrectly)
 {
