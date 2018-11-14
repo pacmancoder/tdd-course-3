@@ -233,7 +233,9 @@ unsigned char Digit::parse() const
 
 bool operator==(const Digit& lhs, const Digit& rhs)
 {
-    return false;
+    return lhs.lines_[0] == rhs.lines_[0]
+            && lhs.lines_[1] == rhs.lines_[1]
+            && lhs.lines_[2] == rhs.lines_[2];
 }
 
 TEST(BankOCR, TwoDigitsAreEqual)
