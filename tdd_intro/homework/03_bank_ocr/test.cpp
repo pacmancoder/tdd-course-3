@@ -120,9 +120,9 @@ const unsigned short DIGITS_COUNT = 10;
 class Display
 {
 public:
-    Display(std::initializer_list<std::string> lines) {}
+    Display(std::initializer_list<std::string> lines);
 
-    Digit operator[](size_t index) const { return Digit{"", "", ""}; }
+    Digit operator[](size_t index) const;
 
 private:
     std::array<std::string, LINES_IN_DIGIT> lines_;
@@ -262,6 +262,25 @@ bool operator==(const Digit& lhs, const Digit& rhs)
 bool operator!=(const Digit& lhs, const Digit& rhs)
 {
     return !(lhs == rhs);
+}
+
+Display::Display(std::initializer_list<std::string> lines) :
+    lines_()
+{
+    size_t i = 0;
+    for (const auto& line : lines)
+    {
+        lines_[i++] = line;
+    }
+}
+
+Digit Display::operator[](size_t index) const
+{
+    return Digit {
+        lines_[0].substr(index * DIGIT_LENGTH, DIGIT_LENGTH),
+        lines_[1].substr(index * DIGIT_LENGTH, DIGIT_LENGTH),
+        lines_[2].substr(index * DIGIT_LENGTH, DIGIT_LENGTH)
+    };
 }
 
 TEST(BankOCR, TwoDigitsAreEqual)
