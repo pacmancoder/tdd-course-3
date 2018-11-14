@@ -222,13 +222,13 @@ Digit::Digit(std::initializer_list<std::string> lines) :
 
 unsigned char Digit::parse() const
 {
-    /*static std::array<const Digit&, 10> correctDigits({s_digit0, s_digit1, s_digit2, s_digit3, s_digit4, s_digit5, s_digit6, s_digit7, s_digit8, s_digit9});
+    static std::array<Digit, 10> correctDigits({s_digit0, s_digit1, s_digit2, s_digit3, s_digit4, s_digit5, s_digit6, s_digit7, s_digit8, s_digit9});
     for (int i = 0; i < correctDigits.size(); ++i) {
         if (correctDigits[i] == *this) {
             return static_cast<unsigned char>(i);
         }
     }
-    */
+
     return 255;
 }
 
@@ -262,7 +262,7 @@ TEST(BankOCR, TwoDigitsAreNotEqual)
 }
 
 
-TEST(BankOCR, DISABLED_SingleDigitParsedCorrectly)
+TEST(BankOCR, SingleDigitParsedCorrectly)
 {
     EXPECT_EQ(0, s_digit0.parse());
     EXPECT_EQ(1, s_digit1.parse());
