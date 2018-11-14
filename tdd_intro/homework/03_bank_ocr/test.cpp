@@ -288,7 +288,15 @@ Digit Display::operator[](size_t index) const
 
 unsigned int Display::parse() const
 {
-    return 42;
+    unsigned int acc = 0;
+
+    for (size_t i = 0; i < DIGITS_ON_DISPLAY; ++i)
+    {
+        acc *= 10;
+        acc += (*this)[i].parse();
+    }
+
+    return acc;
 }
 
 TEST(BankOCR, TwoDigitsAreEqual)
