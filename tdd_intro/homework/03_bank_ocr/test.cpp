@@ -88,6 +88,8 @@ Example input and output
 #include <string>
 #include <array>
 #include <exception>
+#include <istream>
+#include <strstream>
 
 const unsigned short DIGIT_LENGTH = 3;
 const unsigned short LINES_IN_DIGIT = 3;
@@ -130,6 +132,20 @@ public:
 
 private:
     Lines lines_;
+};
+
+template <class InputStream>
+class OCRStreamParser
+{
+public:
+    OCRStreamParser(InputStream&& inputStream) :
+        inputStream_(std::forward<InputStream>(inputStream)) {}
+
+    template<class OutputStream>
+    void parse(OutputStream& outputStream) {};
+
+private:
+    InputStream inputStream_;
 };
 
 std::array<Digit, DIGITS_COUNT> DIGITS =
@@ -220,7 +236,7 @@ const std::array<Display, DIGITS_COUNT> DISPLAY_REPEATABLE =
      }
 }};
 
-const Display DISPLAY_123456789 = { "    _  _     _  _  _  _  _ ",
+const Display DISPLAY_123456789 = {  "    _  _     _  _  _  _  _ ",
                                      "  | _| _||_||_ |_   ||_||_|",
                                      "  ||_  _|  | _||_|  ||_| _|"
 };
@@ -359,4 +375,31 @@ TEST(BankOCR, DisplayCanParseRepeatableValues)
 TEST(BankOCR, DisplayCanParse123456789)
 {
     EXPECT_EQ(123456789, DISPLAY_123456789.parse());
+}
+
+TEST(BankOCR, OCRStreamParsedCorrectly)
+{
+    std::stringstream inputStream;
+    inputStream
+            << "    _  _     _  _  _  _  _ " << std::endl
+            << "  | _| _||_||_ |_   ||_||_|" << std::endl
+            << "  ||_  _|  | _||_|  ||_| _|" << std::endl
+            << " _  _  _  _  _  _  _  _  _ " << std::endl
+            << "| || || || || || || || || |" << std::endl
+            << "|_||_||_||_||_||_||_||_||_|" << std::endl
+            << " _  _  _  _  _  _  _  _  _ " << std::endl
+            << "|_ |_ |_ |_ |_ |_ |_ |_ |_ " << std::endl
+            << " _| _| _| _| _| _| _| _| _|";
+
+    OCRStreamParser<decltype(inputStream)> parser(std::move(inputStream));
+
+    std::stringstream expectedOutputStream;
+    expectedOutputStream
+            << "123456789" << std::endl
+            << "000000000" << std::endl
+            << "555555555";
+
+    std::stringstream actualOutputStream;
+    EXPECT_EQ(expectedOutputStream.str(), actualOutputStream.str());
+
 }
