@@ -355,3 +355,8 @@ TEST(BankOCR, DisplayCanParseRepeatableValues)
     EXPECT_EQ(888888888, DISPLAY_REPEATABLE[8].parse());
     EXPECT_EQ(999999999, DISPLAY_REPEATABLE[9].parse());
 }
+
+TEST(BankOCR, DisplayCanParse123456789)
+{
+    EXPECT_EQ(123456789, DISPLAY_123456789.parse());
+}
