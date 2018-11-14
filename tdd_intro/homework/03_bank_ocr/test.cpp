@@ -117,9 +117,15 @@ private:
 const unsigned short DIGITS_ON_DISPLAY = 9;
 const unsigned short DIGITS_COUNT = 10;
 
-struct Display
+class Display
 {
-    std::string lines[LINES_IN_DIGIT];
+public:
+    Display(std::initializer_list<std::string> lines) {}
+
+    Digit operator[](size_t index) const { return Digit{"", "", ""}; }
+
+private:
+    std::array<std::string, LINES_IN_DIGIT> lines_;
 };
 
 std::array<Digit, DIGITS_COUNT> DIGITS =
@@ -292,4 +298,17 @@ TEST(BankOCR, SingleDigitParsedCorrectly)
 TEST(BankOCR, SingleDigitIsNotParsed)
 {
     EXPECT_THROW(Digit({"123", "456", "789"}).parse(), ParsingException);
+}
+
+TEST(BankOCR, DisplayCanBeDividedOnSeparateDigits)
+{
+    EXPECT_EQ(s_display123456789[0], DIGITS[1]);
+    EXPECT_EQ(s_display123456789[1], DIGITS[2]);
+    EXPECT_EQ(s_display123456789[2], DIGITS[3]);
+    EXPECT_EQ(s_display123456789[3], DIGITS[4]);
+    EXPECT_EQ(s_display123456789[4], DIGITS[5]);
+    EXPECT_EQ(s_display123456789[5], DIGITS[6]);
+    EXPECT_EQ(s_display123456789[6], DIGITS[7]);
+    EXPECT_EQ(s_display123456789[7], DIGITS[8]);
+    EXPECT_EQ(s_display123456789[8], DIGITS[9]);
 }
