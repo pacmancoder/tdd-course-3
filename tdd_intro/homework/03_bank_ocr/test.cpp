@@ -87,9 +87,17 @@ Example input and output
 #include <gtest/gtest.h>
 #include <string>
 #include <array>
+#include <exception>
 
 const unsigned short DIGIT_LENGTH = 3;
 const unsigned short LINES_IN_DIGIT = 3;
+
+class ParsingException : public std::exception
+{
+public:
+    ParsingException() :
+        std::exception("Failed to parse digit") {}
+};
 
 class Digit
 {
@@ -279,4 +287,9 @@ TEST(BankOCR, SingleDigitParsedCorrectly)
     EXPECT_EQ(7, DIGITS[7].parse());
     EXPECT_EQ(8, DIGITS[8].parse());
     EXPECT_EQ(9, DIGITS[9].parse());
+}
+
+TEST(BankOCR, SingleDigitIsNotParsed)
+{
+    EXPECT_THROW(Digit({"123", "456", "789"}), ParsingException);
 }
