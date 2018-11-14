@@ -88,8 +88,8 @@ Example input and output
 #include <string>
 #include <array>
 
-const unsigned short g_digitLen = 3;
-const unsigned short g_linesInDigit = 3;
+const unsigned short DIGIT_LENGTH = 3;
+const unsigned short LINES_IN_DIGIT = 3;
 
 class Digit
 {
@@ -103,56 +103,60 @@ public:
     friend bool operator!=(const Digit& lhs, const Digit& rhs);
 
 private:
-    std::string lines_[g_linesInDigit];
+    std::array<std::string, LINES_IN_DIGIT> lines_;
 };
 
-const unsigned short g_digitsOnDisplay = 9;
+const unsigned short DIGITS_ON_DISPLAY = 9;
+const unsigned short DIGITS_COUNT = 10;
 
 struct Display
 {
-    std::string lines[g_linesInDigit];
+    std::string lines[LINES_IN_DIGIT];
 };
 
-const Digit s_digit0 = { " _ ",
-                         "| |",
-                         "|_|"
-                       };
-const Digit s_digit1 = { "   ",
-                         "  |",
-                         "  |"
-                       };
-const Digit s_digit2 = { " _ ",
-                         " _|",
-                         "|_ "
-                       };
-const Digit s_digit3 = { " _ ",
-                         " _|",
-                         " _|"
-                       };
-const Digit s_digit4 = { "   ",
-                         "|_|",
-                         "  |"
-                       };
-const Digit s_digit5 = { " _ ",
-                         "|_ ",
-                         " _|"
-                       };
-const Digit s_digit6 = { " _ ",
-                         "|_ ",
-                         "|_|"
-                       };
-const Digit s_digit7 = { " _ ",
-                         "  |",
-                         "  |"
-                       };
-const Digit s_digit8 = { " _ ",
-                         "|_|",
-                         "|_|"
-                       };
-const Digit s_digit9 = { " _ ",
-                         "|_|",
-                         " _|"
-                       };
+std::array<Digit, DIGITS_COUNT> DIGITS =
+{{
+     { " _ ",
+       "| |",
+       "|_|"
+     },
+     { "   ",
+       "  |",
+       "  |"
+     },
+     { " _ ",
+       " _|",
+       "|_ "
+     },
+     { " _ ",
+       " _|",
+       " _|"
+     },
+     { "   ",
+       "|_|",
+       "  |"
+     },
+     { " _ ",
+       "|_ ",
+       " _|"
+     },
+     { " _ ",
+       "|_ ",
+       "|_|"
+     },
+     { " _ ",
+       "  |",
+       "  |"
+     },
+     { " _ ",
+       "|_|",
+       "|_|"
+     },
+     { " _ ",
+       "|_|",
+       " _|"
+     }
+}};
 
 const Display s_displayAll0 = { " _  _  _  _  _  _  _  _  _ ",
                                 "| || || || || || || || || |",
@@ -213,7 +217,7 @@ const Display s_display123456789 = { "    _  _     _  _  _  _  _ ",
 Digit::Digit(std::initializer_list<std::string> lines) :
     lines_()
 {
-    int i = 0;
+    size_t i = 0;
     for (const auto& line : lines)
     {
         lines_[i++] = line;
@@ -222,9 +226,10 @@ Digit::Digit(std::initializer_list<std::string> lines) :
 
 unsigned char Digit::parse() const
 {
-    static std::array<Digit, 10> correctDigits({s_digit0, s_digit1, s_digit2, s_digit3, s_digit4, s_digit5, s_digit6, s_digit7, s_digit8, s_digit9});
-    for (int i = 0; i < correctDigits.size(); ++i) {
-        if (correctDigits[i] == *this) {
+    for (size_t i = 0; i < DIGITS.size(); ++i)
+    {
+        if (DIGITS[i] == *this)
+        {
             return static_cast<unsigned char>(i);
         }
     }
@@ -264,14 +269,14 @@ TEST(BankOCR, TwoDigitsAreNotEqual)
 
 TEST(BankOCR, SingleDigitParsedCorrectly)
 {
-    EXPECT_EQ(0, s_digit0.parse());
-    EXPECT_EQ(1, s_digit1.parse());
-    EXPECT_EQ(2, s_digit2.parse());
-    EXPECT_EQ(3, s_digit3.parse());
-    EXPECT_EQ(4, s_digit4.parse());
-    EXPECT_EQ(5, s_digit5.parse());
-    EXPECT_EQ(6, s_digit6.parse());
-    EXPECT_EQ(7, s_digit7.parse());
-    EXPECT_EQ(8, s_digit8.parse());
-    EXPECT_EQ(9, s_digit9.parse());
+    EXPECT_EQ(0, DIGITS[0].parse());
+    EXPECT_EQ(1, DIGITS[1].parse());
+    EXPECT_EQ(2, DIGITS[2].parse());
+    EXPECT_EQ(3, DIGITS[3].parse());
+    EXPECT_EQ(4, DIGITS[4].parse());
+    EXPECT_EQ(5, DIGITS[5].parse());
+    EXPECT_EQ(6, DIGITS[6].parse());
+    EXPECT_EQ(7, DIGITS[7].parse());
+    EXPECT_EQ(8, DIGITS[8].parse());
+    EXPECT_EQ(9, DIGITS[9].parse());
 }
