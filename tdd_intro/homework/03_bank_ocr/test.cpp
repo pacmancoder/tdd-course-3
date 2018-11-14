@@ -126,6 +126,8 @@ public:
 
     Digit operator[](size_t index) const;
 
+    unsigned int parse() const;
+
 private:
     Lines lines_;
 };
@@ -284,6 +286,11 @@ Digit Display::operator[](size_t index) const
     };
 }
 
+unsigned int Display::parse() const
+{
+    return 42;
+}
+
 TEST(BankOCR, TwoDigitsAreEqual)
 {
     Digit lhs({"|-|", "-|-", "   "});
@@ -331,4 +338,18 @@ TEST(BankOCR, DisplayCanBeDividedOnSeparateDigits)
     EXPECT_EQ(DISPLAY_123456789[6], DIGITS[7]);
     EXPECT_EQ(DISPLAY_123456789[7], DIGITS[8]);
     EXPECT_EQ(DISPLAY_123456789[8], DIGITS[9]);
+}
+
+TEST(BankOCR, DisplayCanParseItsValues)
+{
+    EXPECT_EQ(0, s_displayAll0.parse());
+    EXPECT_EQ(111111111, s_displayAll1.parse());
+    EXPECT_EQ(222222222, s_displayAll2.parse());
+    EXPECT_EQ(333333333, s_displayAll3.parse());
+    EXPECT_EQ(444444444, s_displayAll4.parse());
+    EXPECT_EQ(555555555, s_displayAll5.parse());
+    EXPECT_EQ(666666666, s_displayAll6.parse());
+    EXPECT_EQ(777777777, s_displayAll7.parse());
+    EXPECT_EQ(888888888, s_displayAll8.parse());
+    EXPECT_EQ(999999999, s_displayAll9.parse());
 }
