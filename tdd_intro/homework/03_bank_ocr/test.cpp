@@ -157,6 +157,11 @@ public:
                 std::getline(inputStream_, lines[i]);
             }
 
+            if (inputStream_.fail())
+            {
+                break;
+            }
+
             if (!isFirstEntry)
             {
                 outputStream << std::endl;
