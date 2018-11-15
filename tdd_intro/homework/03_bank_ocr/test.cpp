@@ -434,3 +434,23 @@ TEST(BankOCR, OCRStreamParsedCorrectly)
     EXPECT_EQ(expectedOutputStream.str(), actualOutputStream.str());
 
 }
+
+
+TEST(BankOCR, OCRStreamWithTrailingNewLineIsParsedCorrectly)
+{
+    std::stringstream inputStream;
+    inputStream
+            << "    _  _     _  _  _  _  _ " << std::endl
+            << "  | _| _||_||_ |_   ||_||_|" << std::endl
+            << "  ||_  _|  | _||_|  ||_| _|" << std::endl;
+
+    std::stringstream expectedOutputStream;
+    expectedOutputStream << "123456789";
+
+    OCRStreamParser<decltype(inputStream)> parser(std::move(inputStream));
+    std::stringstream actualOutputStream;
+    parser.parse(actualOutputStream);
+
+    EXPECT_EQ(expectedOutputStream.str(), actualOutputStream.str());
+
+}
