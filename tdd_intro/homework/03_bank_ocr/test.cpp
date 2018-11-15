@@ -145,14 +145,17 @@ public:
     template<class OutputStream>
     void parse(OutputStream& outputStream)
     {
+        const char FILL_DIGIT = '0';
+
         bool isFirstEntry = true;
         while(!inputStream_.eof())
         {
             Lines lines;
 
-            std::getline(inputStream_, lines[0]);
-            std::getline(inputStream_, lines[1]);
-            std::getline(inputStream_, lines[2]);
+            for (size_t i = 0; i < LINES_IN_DIGIT; ++i)
+            {
+                std::getline(inputStream_, lines[i]);
+            }
 
             if (!isFirstEntry)
             {
@@ -161,7 +164,7 @@ public:
 
             outputStream
                     << std::setw(DIGITS_ON_DISPLAY)
-                    << std::setfill('0')
+                    << std::setfill(FILL_DIGIT)
                     << Display(std::move(lines)).parse();
 
             isFirstEntry = false;
@@ -260,9 +263,11 @@ const std::array<Display, DIGITS_COUNT> DISPLAY_REPEATABLE =
      }
 }};
 
-const Display DISPLAY_123456789 = {  "    _  _     _  _  _  _  _ ",
-                                     "  | _| _||_||_ |_   ||_||_|",
-                                     "  ||_  _|  | _||_|  ||_| _|"
+const Display DISPLAY_123456789 =
+{
+    "    _  _     _  _  _  _  _ ",
+    "  | _| _||_||_ |_   ||_||_|",
+    "  ||_  _|  | _||_|  ||_| _|"
 };
 
 Lines InitializerListToLines(std::initializer_list<std::string> linesList)
