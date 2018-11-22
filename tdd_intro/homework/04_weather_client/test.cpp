@@ -156,7 +156,14 @@ std::tuple<int, unsigned short, double> SplitResponse(const std::string& str)
     unsigned short windDir = 0;
     double windSpeed = 0;
 
-    ss >> temp >> windDir >> windSpeed;
+    try
+    {
+        ss >> temp >> windDir >> windSpeed;
+    }
+    catch (const std::ios_base::failure&)
+    {
+        throw std::invalid_argument("Response has invalid format");
+    }
 
     return std::make_tuple(temp, windDir, windSpeed);
 }
@@ -341,5 +348,5 @@ TEST(WeatherServerTest, SplitResponseThrowsOnImvalidString)
     ASSERT_THROW(SplitResponse("0;xx;zzzz"), std::invalid_argument);
     ASSERT_THROW(SplitResponse("xx;yy;zzzz"), std::invalid_argument);
     ASSERT_THROW(SplitResponse("xx;yy"), std::invalid_argument);
-    ASSERT_THROW(SplitResponse("-11282.4"), std::invalid_argument);
+    ASSERT_THROW(SplitResponse("-11282.4"), std::invalid_argument );
 }
