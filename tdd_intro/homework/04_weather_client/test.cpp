@@ -201,3 +201,9 @@ TEST(WeatherServerTest, SplitRequestThrowsOnWrongSize)
 {
     ASSERT_THROW(SplitRequest("31.08.2018;03:"), std::invalid_argument);
 }
+
+
+TEST(WeatherServerTest, SplitRequestThrowsOnWrongSeparator)
+{
+    ASSERT_THROW(SplitRequest("31.08.2018x03:00"), std::invalid_argument);
+}
