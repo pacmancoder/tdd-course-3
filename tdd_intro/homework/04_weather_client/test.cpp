@@ -50,6 +50,7 @@ IMPORTANT:
 #include <utility>
 #include <cstdint>
 #include <string>
+#include <array>
 #include <stdexcept>
 
 struct Weather
@@ -79,14 +80,23 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 
     const size_t DATE_TOKEN_SIZE = DAY_TOKEN_SIZE + MONTH_TOKEN_SIZE + YEAR_TOKEN_SIZE + SEPARATOR_SIZE * 2;
 
+    const char SEPARATOR_CHAR = '.';
+    const std::array<size_t, 2> SEPARATOR_POSITIONS = {{
+            DAY_TOKEN_POS + DAY_TOKEN_SIZE,
+            MONTH_TOKEN_POS + MONTH_TOKEN_SIZE
+    }};
+
     if (str.size() != DATE_TOKEN_SIZE)
     {
         throw std::invalid_argument("Invalid date string size");
     }
 
-    if (str[DAY_TOKEN_POS + DAY_TOKEN_SIZE] != '.' || str[MONTH_TOKEN_POS + MONTH_TOKEN_SIZE] != '.')
+    for (auto pos : SEPARATOR_POSITIONS)
     {
-        throw std::invalid_argument("Invalid separator");
+        if (str[pos] != SEPARATOR_CHAR)
+        {
+            throw std::invalid_argument("Invalid separator");
+        }
     }
 
     return std::make_tuple(
