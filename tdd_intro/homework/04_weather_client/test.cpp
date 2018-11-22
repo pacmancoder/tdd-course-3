@@ -77,10 +77,12 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
     const size_t MONTH_TOKEN_POS = DAY_TOKEN_POS + DAY_TOKEN_SIZE + SEPARATOR_SIZE;
     const size_t YEAR_TOKEN_POS = MONTH_TOKEN_POS + MONTH_TOKEN_SIZE + SEPARATOR_SIZE;
 
+    const size_t DATE_TOKEN_SIZE = DAY_TOKEN_SIZE + MONTH_TOKEN_SIZE + YEAR_TOKEN_SIZE + SEPARATOR_SIZE * 2;
 
-    if (str.size() != DAY_TOKEN_SIZE + SEPARATOR_SIZE + MONTH_TOKEN_SIZE + SEPARATOR_SIZE + YEAR_TOKEN_SIZE)
+
+    if (str.size() != DATE_TOKEN_SIZE)
     {
-        throw std::runtime_error("wrong");
+        throw std::invalid_argument("Invalid date string size");
     }
 
     return std::make_tuple(
@@ -117,5 +119,5 @@ TEST(WeatherServerTest, SplitDateReturnsThreeCorespondingParts)
 
 TEST(WeatherServerTest, SplitDateThrowsOnInvalidSize)
 {
-    ASSERT_THROW(SplitDate("1"), std::runtime_error);
+    ASSERT_THROW(SplitDate("1"), std::invalid_argument);
 }
