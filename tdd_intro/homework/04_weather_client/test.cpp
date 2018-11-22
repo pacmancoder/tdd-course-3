@@ -120,6 +120,11 @@ void ValidateTime(const std::string& str)
 
 std::tuple<std::string, std::string> SplitRequest(const std::string& str)
 {
+    if (str.size() != DATE_TOKEN_SIZE + SEPARATOR_SIZE + TIME_TOKEN_SIZE)
+    {
+        throw std::invalid_argument("Invalid time token size");
+    }
+
     return std::make_tuple(str.substr(0, DATE_TOKEN_SIZE), str.substr(DATE_TOKEN_SIZE + SEPARATOR_SIZE));
 }
 
@@ -192,5 +197,5 @@ TEST(WeatherServerTest, SplitRequestReturnsTwoCorespondingParts)
 
 TEST(WeatherServerTest, SplitRequestThrowsOnWrongSize)
 {
-    ASSERT_EQ(SplitRequest("31.08.2018;03:"), std::invalid_argument);
+    ASSERT_THROW(SplitRequest("31.08.2018;03:"), std::invalid_argument);
 }
