@@ -91,7 +91,7 @@ const size_t REQUEST_TOKEN_SIZE = DATE_TOKEN_SIZE + SEPARATOR_SIZE + TIME_TOKEN_
 
 const char REQUEST_SEPARATOR_CHAR = ';';
 
-std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
+void ValidateDate(const std::string& str)
 {
     if (str.size() != DATE_TOKEN_SIZE)
     {
@@ -106,11 +106,9 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
         }
     }
 
-    auto day   =  std::stoul(str.substr(DAY_TOKEN_POS, DAY_TOKEN_SIZE));
-    auto month =  std::stoul(str.substr(MONTH_TOKEN_POS, MONTH_TOKEN_SIZE));
-    auto year  =  std::stoul(str.substr(YEAR_TOKEN_POS, YEAR_TOKEN_SIZE));
-
-    return std::make_tuple(day, month, year);
+    std::stoul(str.substr(DAY_TOKEN_POS, DAY_TOKEN_SIZE));
+    std::stoul(str.substr(MONTH_TOKEN_POS, MONTH_TOKEN_SIZE));
+    std::stoul(str.substr(YEAR_TOKEN_POS, YEAR_TOKEN_SIZE));
 }
 
 void ValidateTime(const std::string& str)
@@ -166,7 +164,7 @@ public:
         try
         {
             auto splittedRequest = SplitRequest(request);
-            SplitDate(std::get<0>(splittedRequest));
+            ValidateDate(std::get<0>(splittedRequest));
             ValidateTime(std::get<1>(splittedRequest));
         }
         catch (const std::logic_error&)
@@ -194,32 +192,32 @@ public:
 };
 
 
-TEST(WeatherServerTest, SplitDateReturnsThreeCorespondingParts)
+TEST(WeatherServerTest, ValidateDatePassesOnCorrectDate)
 {
-    ASSERT_EQ(std::make_tuple(31, 12, 2012), SplitDate("31.12.2012"));
+    ASSERT_NO_THROW(ValidateDate("31.12.2012"));
 }
 
-TEST(WeatherServerTest, SplitDateThrowsOnInvalidSize)
+TEST(WeatherServerTest, ValidateDateThrowsOnInvalidSize)
 {
-    ASSERT_THROW(SplitDate("1"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("1"), std::invalid_argument);
 }
 
-TEST(WeatherServerTest, SplitDateThrowsOnInvalidSeparator)
+TEST(WeatherServerTest, ValidateDateThrowsOnInvalidSeparator)
 {
-    ASSERT_THROW(SplitDate("31x12.2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("31.12x2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("31x12x2012"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("31x12.2012"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("31.12x2012"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("31x12x2012"), std::invalid_argument);
 }
 
-TEST(WeatherServerTest, SplitDateThrowsOnInvalidNumbers)
+TEST(WeatherServerTest, ValidateDateThrowsOnInvalidNumbers)
 {
-    ASSERT_THROW(SplitDate("xx.12.2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("31.yy.2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("31.12.zzzz"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("xx.yy.2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("xx.12.zzzz"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("31.yy.zzzz"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("xx.yy.zzzz"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("xx.12.2012"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("31.yy.2012"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("31.12.zzzz"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("xx.yy.2012"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("xx.12.zzzz"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("31.yy.zzzz"), std::invalid_argument);
+    ASSERT_THROW(ValidateDate("xx.yy.zzzz"), std::invalid_argument);
 }
 
 TEST(WeatherServerTest, TimeValidationPassesOnCorrectStrings)
