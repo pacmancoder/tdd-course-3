@@ -79,10 +79,14 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 
     const size_t DATE_TOKEN_SIZE = DAY_TOKEN_SIZE + MONTH_TOKEN_SIZE + YEAR_TOKEN_SIZE + SEPARATOR_SIZE * 2;
 
-
     if (str.size() != DATE_TOKEN_SIZE)
     {
         throw std::invalid_argument("Invalid date string size");
+    }
+
+    if (str[DAY_TOKEN_POS + DAY_TOKEN_SIZE] != '.' || str[MONTH_TOKEN_POS + MONTH_TOKEN_SIZE] != '.')
+    {
+        throw std::invalid_argument("Invalid separator");
     }
 
     return std::make_tuple(
@@ -120,4 +124,11 @@ TEST(WeatherServerTest, SplitDateReturnsThreeCorespondingParts)
 TEST(WeatherServerTest, SplitDateThrowsOnInvalidSize)
 {
     ASSERT_THROW(SplitDate("1"), std::invalid_argument);
+}
+
+TEST(WeatherServerTest, SplitDateThrowsOnInvalidSeparator)
+{
+    ASSERT_THROW(SplitDate("31x12.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("31.12x2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("31x12x2012"), std::invalid_argument);
 }
