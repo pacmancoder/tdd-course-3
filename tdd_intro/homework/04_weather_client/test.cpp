@@ -106,8 +106,13 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
     return std::make_tuple(day, month, year);
 }
 
-void ValidateTime(const std::string&)
+void ValidateTime(const std::string& str)
 {
+    if (str == "03:00" || str == "09:00" || str == "15:00" || str == "21:00")
+    {
+        return;
+    }
+
     throw std::invalid_argument("Time validation failed");
 }
 
