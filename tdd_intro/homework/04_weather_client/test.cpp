@@ -93,6 +93,8 @@ const size_t REQUEST_TOKEN_SIZE = DATE_TOKEN_SIZE + SEPARATOR_SIZE + TIME_TOKEN_
 
 const char REQUEST_SEPARATOR_CHAR = ';';
 
+const char RESPONSE_SEPARATOR_CHAR = ';';
+
 void ValidateDate(const std::string& str)
 {
     if (str.size() != DATE_TOKEN_SIZE)
@@ -138,18 +140,25 @@ std::tuple<std::string, std::string> SplitRequest(const std::string& str)
     return std::make_tuple(str.substr(0, DATE_TOKEN_SIZE), str.substr(DATE_TOKEN_SIZE + SEPARATOR_SIZE));
 }
 
-std::tuple<int, unsigned short, double> SplitResponse(const std::string& str)
+std::string PrepareResponseString(const std::string& str)
 {
+    static const char STREAM_SEPARATOR_CHAR = ' ';
+
     std::string whitespacesString = str;
 
     std::for_each(whitespacesString.begin(), whitespacesString.end(), [](char& ch) {
-        if (ch == ';')
+        if (ch == RESPONSE_SEPARATOR_CHAR)
         {
-            ch = ' ';
+            ch = STREAM_SEPARATOR_CHAR;
         }
     });
 
-    std::stringstream ss(whitespacesString);
+    return whitespacesString;
+}
+
+std::tuple<int, unsigned short, double> SplitResponse(const std::string& str)
+{
+    std::stringstream ss(PrepareResponseString(str));
     ss.exceptions(std::ios::failbit);
 
     int temp = 0;
