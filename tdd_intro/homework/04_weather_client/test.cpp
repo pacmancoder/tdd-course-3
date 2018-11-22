@@ -142,3 +142,10 @@ TEST(WeatherServerTest, SplitDateThrowsOnInvalidSeparator)
     ASSERT_THROW(SplitDate("31.12x2012"), std::invalid_argument);
     ASSERT_THROW(SplitDate("31x12x2012"), std::invalid_argument);
 }
+
+TEST(WeatherServerTest, SplitDateThrowsOnRange)
+{
+    ASSERT_THROW(SplitDate("32.12.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("31.13.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("32.13.2012"), std::invalid_argument);
+}
