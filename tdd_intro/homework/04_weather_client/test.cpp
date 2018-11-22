@@ -66,10 +66,21 @@ struct Weather
 
 std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 {
+    const size_t DAY_TOKEN_SIZE = 2;
+    const size_t MONTH_TOKEN_SIZE = 2;
+    const size_t YEAR_TOKEN_SIZE = 4;
+
+    const size_t SEPARATOR_SIZE = 1;
+
+    const size_t DAY_TOKEN_POS = 0;
+    const size_t MONTH_TOKEN_POS = DAY_TOKEN_POS + DAY_TOKEN_SIZE + SEPARATOR_SIZE;
+    const size_t YEAR_TOKEN_POS = MONTH_TOKEN_POS + MONTH_TOKEN_SIZE + SEPARATOR_SIZE;
+
+
     return std::make_tuple(
-        std::stoul(str.substr(0, 2)),
-        std::stoul(str.substr(3, 2)),
-        std::stoul(str.substr(6, 4)));
+        std::stoul(str.substr(DAY_TOKEN_POS, DAY_TOKEN_SIZE)),
+        std::stoul(str.substr(MONTH_TOKEN_POS, MONTH_TOKEN_SIZE)),
+        std::stoul(str.substr(YEAR_TOKEN_POS, YEAR_TOKEN_SIZE)));
 }
 
 class IWeatherServer
