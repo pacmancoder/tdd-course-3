@@ -157,6 +157,15 @@ public:
     virtual double GetMaximumWindSpeed(IWeatherServer& server, const std::string& date) = 0;
 };
 
+class FakeWeatherServer : public IWeatherServer
+{
+public:
+    std::string GetWeather(const std::string& request) override
+    {
+        return "";
+    }
+};
+
 
 TEST(WeatherServerTest, SplitDateReturnsThreeCorespondingParts)
 {
@@ -213,4 +222,22 @@ TEST(WeatherServerTest, SplitRequestThrowsOnWrongSize)
 TEST(WeatherServerTest, SplitRequestThrowsOnWrongSeparator)
 {
     ASSERT_THROW(SplitRequest("31.08.2018x03:00"), std::invalid_argument);
+}
+
+TEST(WeatherServerTest, WeatherServerReturnsCorrectResponseForRequest)
+{
+    FakeWeatherServer weatherServer;
+
+    ASSERT_EQ(weatherServer.GetWeather("31.08.2018;03:00"), "20;181;5.1");
+    ASSERT_EQ(weatherServer.GetWeather("31.08.2018;09:00"), "23;204;4.9");
+    ASSERT_EQ(weatherServer.GetWeather("31.08.2018;15:00"), "33;193;4.3");
+    ASSERT_EQ(weatherServer.GetWeather("31.08.2018;21:00"), "26;179;4.5");
+    ASSERT_EQ(weatherServer.GetWeather("01.09.2018;03:00"), "19;176;4.2");
+    ASSERT_EQ(weatherServer.GetWeather("01.09.2018;09:00"), "22;131;4.1");
+    ASSERT_EQ(weatherServer.GetWeather("01.09.2018;15:00"), "31;109;4.0");
+    ASSERT_EQ(weatherServer.GetWeather("01.09.2018;21:00"), "24;127;4.1");
+    ASSERT_EQ(weatherServer.GetWeather("02.09.2018;03:00"), "21;158;3.8");
+    ASSERT_EQ(weatherServer.GetWeather("02.09.2018;09:00"), "25;201;3.5");
+    ASSERT_EQ(weatherServer.GetWeather("02.09.2018;15:00"), "34;258;3.7");
+    ASSERT_EQ(weatherServer.GetWeather("02.09.2018;21:00"), "27;299;4.0");
 }
