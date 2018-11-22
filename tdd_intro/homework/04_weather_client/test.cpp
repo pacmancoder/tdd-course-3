@@ -49,6 +49,7 @@ IMPORTANT:
 
 #include <utility>
 #include <cstdint>
+#include <string>
 
 struct Weather
 {
@@ -63,9 +64,12 @@ struct Weather
     }
 };
 
-std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string&)
+std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 {
-    return std::make_tuple(0, 0, 0);
+    return std::make_tuple(
+        std::stoul(str.substr(0, 2)),
+        std::stoul(str.substr(3, 2)),
+        std::stoul(str.substr(6, 4)));
 }
 
 class IWeatherServer
