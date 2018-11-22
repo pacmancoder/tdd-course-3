@@ -66,34 +66,34 @@ struct Weather
     }
 };
 
+const size_t DAY_TOKEN_SIZE = 2;
+const size_t MONTH_TOKEN_SIZE = 2;
+const size_t YEAR_TOKEN_SIZE = 4;
+
+const size_t SEPARATOR_SIZE = 1;
+
+const size_t DAY_TOKEN_POS = 0;
+const size_t MONTH_TOKEN_POS = DAY_TOKEN_POS + DAY_TOKEN_SIZE + SEPARATOR_SIZE;
+const size_t YEAR_TOKEN_POS = MONTH_TOKEN_POS + MONTH_TOKEN_SIZE + SEPARATOR_SIZE;
+
+const size_t DATE_TOKEN_SIZE = DAY_TOKEN_SIZE + MONTH_TOKEN_SIZE + YEAR_TOKEN_SIZE + SEPARATOR_SIZE * 2;
+
+const char DATE_SEPARATOR_CHAR = '.';
+const std::array<size_t, 2> DATE_SEPARATOR_POSITIONS = {{
+        DAY_TOKEN_POS + DAY_TOKEN_SIZE,
+        MONTH_TOKEN_POS + MONTH_TOKEN_SIZE
+}};
+
 std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 {
-    const size_t DAY_TOKEN_SIZE = 2;
-    const size_t MONTH_TOKEN_SIZE = 2;
-    const size_t YEAR_TOKEN_SIZE = 4;
-
-    const size_t SEPARATOR_SIZE = 1;
-
-    const size_t DAY_TOKEN_POS = 0;
-    const size_t MONTH_TOKEN_POS = DAY_TOKEN_POS + DAY_TOKEN_SIZE + SEPARATOR_SIZE;
-    const size_t YEAR_TOKEN_POS = MONTH_TOKEN_POS + MONTH_TOKEN_SIZE + SEPARATOR_SIZE;
-
-    const size_t DATE_TOKEN_SIZE = DAY_TOKEN_SIZE + MONTH_TOKEN_SIZE + YEAR_TOKEN_SIZE + SEPARATOR_SIZE * 2;
-
-    const char SEPARATOR_CHAR = '.';
-    const std::array<size_t, 2> SEPARATOR_POSITIONS = {{
-            DAY_TOKEN_POS + DAY_TOKEN_SIZE,
-            MONTH_TOKEN_POS + MONTH_TOKEN_SIZE
-    }};
-
     if (str.size() != DATE_TOKEN_SIZE)
     {
         throw std::invalid_argument("Invalid date string size");
     }
 
-    for (auto pos : SEPARATOR_POSITIONS)
+    for (auto pos : DATE_SEPARATOR_POSITIONS)
     {
-        if (str[pos] != SEPARATOR_CHAR)
+        if (str[pos] != DATE_SEPARATOR_CHAR)
         {
             throw std::invalid_argument("Invalid separator");
         }
@@ -116,9 +116,9 @@ void ValidateTime(const std::string& str)
     throw std::invalid_argument("Time validation failed");
 }
 
-std::tuple<std::string, std::string> SplitRequest(const std::string&)
+std::tuple<std::string, std::string> SplitRequest(const std::string& str)
 {
-    return std::make_tuple("", "");
+    return std::make_tuple(str.substr(0, DATE_TOKEN_SIZE), str.substr(DATE_TOKEN_SIZE + SEPARATOR_SIZE));
 }
 
 class IWeatherServer
