@@ -47,6 +47,9 @@ IMPORTANT:
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <utility>
+#include <cstdint>
+
 struct Weather
 {
     short temperature = 0;
@@ -59,6 +62,11 @@ struct Weather
                std::abs(windSpeed - right.windSpeed) < 0.01;
     }
 };
+
+std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string&)
+{
+    return std::make_tuple(0, 0, 0);
+}
 
 class IWeatherServer
 {
@@ -79,3 +87,9 @@ public:
     virtual double GetAverageWindDirection(IWeatherServer& server, const std::string& date) = 0;
     virtual double GetMaximumWindSpeed(IWeatherServer& server, const std::string& date) = 0;
 };
+
+
+TEST(WeatherServerTest, SplitDateReturnsThreeCorespondingParts)
+{
+    ASSERT_EQ(std::make_tuple(31, 12, 2012), SplitDate("31.12.2012"));
+}
