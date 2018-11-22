@@ -127,6 +127,11 @@ std::tuple<std::string, std::string> SplitRequest(const std::string& str)
         throw std::invalid_argument("Invalid time token size");
     }
 
+    if (str[DATE_TOKEN_SIZE] != ';')
+    {
+        throw std::invalid_argument("Invalid request token separator");
+    }
+
     return std::make_tuple(str.substr(0, DATE_TOKEN_SIZE), str.substr(DATE_TOKEN_SIZE + SEPARATOR_SIZE));
 }
 
