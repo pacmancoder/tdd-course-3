@@ -136,6 +136,11 @@ std::tuple<std::string, std::string> SplitRequest(const std::string& str)
     return std::make_tuple(str.substr(0, DATE_TOKEN_SIZE), str.substr(DATE_TOKEN_SIZE + SEPARATOR_SIZE));
 }
 
+std::tuple<int, unsigned short, double> SplitResponse(const std::string&)
+{
+    return std::make_tuple(1, 1, 1);
+}
+
 class IWeatherServer
 {
 public:
@@ -191,6 +196,34 @@ public:
     }
 };
 
+class WeatherClient : public IWeatherClient
+{
+public:
+    double GetAverageTemperature(IWeatherServer& server, const std::string& date) override
+    {
+        return 0;
+    }
+
+    double GetMinimumTemperature(IWeatherServer& server, const std::string& date) override
+    {
+        return 0;
+    }
+
+    double GetMaximumTemperature(IWeatherServer& server, const std::string& date) override
+    {
+        return 0;
+    }
+
+    double GetAverageWindDirection(IWeatherServer& server, const std::string& date) override
+    {
+        return 0;
+    }
+
+    double GetMaximumWindSpeed(IWeatherServer& server, const std::string& date) override
+    {
+        return 0;
+    }
+};
 
 TEST(WeatherServerTest, ValidateDatePassesOnCorrectDate)
 {
@@ -273,4 +306,11 @@ TEST(WeatherServerTest, WeatherServerReturnsEmptyStringOnInvalidRequest)
     ASSERT_EQ("", weatherServer.GetWeather("31x08.2018x03:00"));
     ASSERT_EQ("", weatherServer.GetWeather("31x08.2018;03:00"));
     ASSERT_EQ("", weatherServer.GetWeather("31x08.2018;0q:00"));
+}
+
+TEST(WeatherServerTest, SplitResponseReturnsTreeDoublesOnCorrectString)
+{
+    ASSERT_EQ(std::make_tuple(32, 64, 4.0),  SplitResponse("32;64;4.0"));
+    ASSERT_EQ(std::make_tuple(-1, 128, 2.4), SplitResponse("-1;128;2.4"));
+    ASSERT_EQ(std::make_tuple(0, 256, 8.2),  SplitResponse("0;256;8.2"));
 }
