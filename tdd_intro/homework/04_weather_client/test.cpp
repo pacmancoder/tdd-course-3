@@ -163,6 +163,17 @@ class FakeWeatherServer : public IWeatherServer
 public:
     std::string GetWeather(const std::string& request) override
     {
+        try
+        {
+            auto splittedRequest = SplitRequest(request);
+            SplitDate(std::get<0>(splittedRequest));
+            ValidateTime(std::get<1>(splittedRequest));
+        }
+        catch (const std::logic_error&)
+        {
+            return "";
+        }
+
         const std::map<std::string, std::string> response = {
             {"31.08.2018;03:00", "20;181;5.1"},
             {"31.08.2018;09:00", "23;204;4.9"},
