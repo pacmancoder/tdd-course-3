@@ -84,6 +84,8 @@ const std::array<size_t, 2> DATE_SEPARATOR_POSITIONS = {{
         MONTH_TOKEN_POS + MONTH_TOKEN_SIZE
 }};
 
+const size_t TIME_TOKEN_SIZE = 5;
+
 std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 {
     if (str.size() != DATE_TOKEN_SIZE)
@@ -186,4 +188,9 @@ TEST(WeatherServerTest, TimeValidationThrowsOnInvalidString)
 TEST(WeatherServerTest, SplitRequestReturnsTwoCorespondingParts)
 {
     ASSERT_EQ(std::make_tuple("31.08.2018", "03:00"), SplitRequest("31.08.2018;03:00"));
+}
+
+TEST(WeatherServerTest, SplitRequestThrowsOnWrongSize)
+{
+    ASSERT_EQ(SplitRequest("31.08.2018;03:"), std::invalid_argument);
 }
