@@ -106,6 +106,11 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
     return std::make_tuple(day, month, year);
 }
 
+void ValidateTime(const std::string&)
+{
+    throw std::invalid_argument("Time validation failed");
+}
+
 class IWeatherServer
 {
 public:
@@ -153,4 +158,12 @@ TEST(WeatherServerTest, SplitDateThrowsOnInvalidNumbers)
     ASSERT_THROW(SplitDate("xx.12.zzzz"), std::invalid_argument);
     ASSERT_THROW(SplitDate("31.yy.zzzz"), std::invalid_argument);
     ASSERT_THROW(SplitDate("xx.yy.zzzz"), std::invalid_argument);
+}
+
+TEST(WeatherServerTest, TimeValidationPassesOnCorrectStrings)
+{
+    ASSERT_NO_THROW(ValidateTime("03:00"));
+    ASSERT_NO_THROW(ValidateTime("09:00"));
+    ASSERT_NO_THROW(ValidateTime("15:00"));
+    ASSERT_NO_THROW(ValidateTime("21:00"));
 }
