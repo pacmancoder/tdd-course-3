@@ -88,6 +88,8 @@ const size_t TIME_TOKEN_SIZE = 5;
 
 const size_t REQUEST_TOKEN_SIZE = DATE_TOKEN_SIZE + SEPARATOR_SIZE + TIME_TOKEN_SIZE;
 
+const char REQUEST_SEPARATOR_CHAR = ';';
+
 std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
 {
     if (str.size() != DATE_TOKEN_SIZE)
@@ -127,7 +129,7 @@ std::tuple<std::string, std::string> SplitRequest(const std::string& str)
         throw std::invalid_argument("Invalid time token size");
     }
 
-    if (str[DATE_TOKEN_SIZE] != ';')
+    if (str[DATE_TOKEN_SIZE] != REQUEST_SEPARATOR_CHAR)
     {
         throw std::invalid_argument("Invalid request token separator");
     }
