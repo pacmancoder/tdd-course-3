@@ -53,6 +53,8 @@ IMPORTANT:
 #include <array>
 #include <stdexcept>
 #include <map>
+#include <algorithm>
+#include <sstream>
 
 struct Weather
 {
@@ -136,9 +138,27 @@ std::tuple<std::string, std::string> SplitRequest(const std::string& str)
     return std::make_tuple(str.substr(0, DATE_TOKEN_SIZE), str.substr(DATE_TOKEN_SIZE + SEPARATOR_SIZE));
 }
 
-std::tuple<int, unsigned short, double> SplitResponse(const std::string&)
+std::tuple<int, unsigned short, double> SplitResponse(const std::string& str)
 {
-    return std::make_tuple(1, 1, 1);
+    std::string whitespacesString = str;
+
+    std::for_each(whitespacesString.begin(), whitespacesString.end(), [](char& ch) {
+        if (ch == ';')
+        {
+            ch = ' ';
+        }
+    });
+
+    std::stringstream ss(whitespacesString);
+    ss.exceptions(std::ios::failbit);
+
+    int temp = 0;
+    unsigned short windDir = 0;
+    double windSpeed = 0;
+
+    ss >> temp >> windDir >> windSpeed;
+
+    return std::make_tuple(temp, windDir, windSpeed);
 }
 
 class IWeatherServer
