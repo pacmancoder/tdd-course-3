@@ -172,3 +172,8 @@ TEST(WeatherServerTest, TimeValidationPassesOnCorrectStrings)
     ASSERT_NO_THROW(ValidateTime("15:00"));
     ASSERT_NO_THROW(ValidateTime("21:00"));
 }
+
+TEST(WeatherServerTest, TimeValidationThrowsOnInvalidString)
+{
+    ASSERT_THROW(ValidateTime("21:32"), std::invalid_argument);
+}
