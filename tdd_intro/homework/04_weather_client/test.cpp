@@ -116,6 +116,11 @@ void ValidateTime(const std::string& str)
     throw std::invalid_argument("Time validation failed");
 }
 
+std::tuple<std::string, std::string> SplitRequest(const std::string&)
+{
+    return std::make_tuple("", "");
+}
+
 class IWeatherServer
 {
 public:
@@ -176,4 +181,9 @@ TEST(WeatherServerTest, TimeValidationPassesOnCorrectStrings)
 TEST(WeatherServerTest, TimeValidationThrowsOnInvalidString)
 {
     ASSERT_THROW(ValidateTime("21:32"), std::invalid_argument);
+}
+
+TEST(WeatherServerTest, SplitRequestReturnsTwoCorespondingParts)
+{
+    ASSERT_EQ(std::make_tuple("31.08.2018", "03:00"), SplitRequest("31.08.2018;03:00"));
 }
