@@ -334,3 +334,12 @@ TEST(WeatherServerTest, SplitResponseReturnsTreeDoublesOnCorrectString)
     ASSERT_EQ(std::make_tuple(-1, 128, 2.4), SplitResponse("-1;128;2.4"));
     ASSERT_EQ(std::make_tuple(0, 256, 8.2),  SplitResponse("0;256;8.2"));
 }
+
+TEST(WeatherServerTest, SplitResponseThrowsOnImvalidString)
+{
+    ASSERT_THROW(SplitResponse("0;2;zzzz"), std::invalid_argument);
+    ASSERT_THROW(SplitResponse("0;xx;zzzz"), std::invalid_argument);
+    ASSERT_THROW(SplitResponse("xx;yy;zzzz"), std::invalid_argument);
+    ASSERT_THROW(SplitResponse("xx;yy"), std::invalid_argument);
+    ASSERT_THROW(SplitResponse("-11282.4"), std::invalid_argument);
+}
