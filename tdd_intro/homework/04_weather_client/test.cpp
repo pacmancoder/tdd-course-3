@@ -99,10 +99,11 @@ std::tuple<uint8_t, uint8_t, uint16_t> SplitDate(const std::string& str)
         }
     }
 
-    return std::make_tuple(
-        std::stoul(str.substr(DAY_TOKEN_POS, DAY_TOKEN_SIZE)),
-        std::stoul(str.substr(MONTH_TOKEN_POS, MONTH_TOKEN_SIZE)),
-        std::stoul(str.substr(YEAR_TOKEN_POS, YEAR_TOKEN_SIZE)));
+    auto day   =  std::stoul(str.substr(DAY_TOKEN_POS, DAY_TOKEN_SIZE));
+    auto month =  std::stoul(str.substr(MONTH_TOKEN_POS, MONTH_TOKEN_SIZE));
+    auto year  =  std::stoul(str.substr(YEAR_TOKEN_POS, YEAR_TOKEN_SIZE));
+
+    return std::make_tuple(day, month, year);
 }
 
 class IWeatherServer
@@ -143,9 +144,13 @@ TEST(WeatherServerTest, SplitDateThrowsOnInvalidSeparator)
     ASSERT_THROW(SplitDate("31x12x2012"), std::invalid_argument);
 }
 
-TEST(WeatherServerTest, SplitDateThrowsOnRange)
+TEST(WeatherServerTest, SplitDateThrowsOnInvalidNumbers)
 {
-    ASSERT_THROW(SplitDate("32.12.2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("31.13.2012"), std::invalid_argument);
-    ASSERT_THROW(SplitDate("32.13.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("xx.12.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("31.yy.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("31.12.zzzz"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("xx.yy.2012"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("xx.12.zzzz"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("31.yy.zzzz"), std::invalid_argument);
+    ASSERT_THROW(SplitDate("xx.yy.zzzz"), std::invalid_argument);
 }
