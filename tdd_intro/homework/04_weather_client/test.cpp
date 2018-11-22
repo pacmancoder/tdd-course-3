@@ -257,3 +257,11 @@ TEST(WeatherServerTest, WeatherServerReturnsCorrectResponseForRequest)
     ASSERT_EQ(weatherServer.GetWeather("02.09.2018;15:00"), "34;258;3.7");
     ASSERT_EQ(weatherServer.GetWeather("02.09.2018;21:00"), "27;299;4.0");
 }
+
+TEST(WeatherServerTest, WeatherServerReturnsEmptyStringOnInvalidRequest)
+{
+    FakeWeatherServer weatherServer;
+    ASSERT_EQ("", weatherServer.GetWeather("31x08.2018x03:00"));
+    ASSERT_EQ("", weatherServer.GetWeather("31x08.2018;03:00"));
+    ASSERT_EQ("", weatherServer.GetWeather("31x08.2018;0q:00"));
+}
