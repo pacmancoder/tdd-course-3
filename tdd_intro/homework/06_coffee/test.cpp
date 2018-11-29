@@ -32,13 +32,18 @@ public:
 };
 
 
-enum Cup
+enum class Cup
 {
     Normal,
     Big
 };
 
-enum Coffee
+int GetCupCapacity(const Cup)
+{
+    return 100;
+}
+
+enum class Coffee
 {
     Americano
 };
@@ -66,7 +71,7 @@ public:
     void CreateCoffee(const Cup cup, const Coffee coffee)
     {
         m_source.AddCoffee(75);
-        m_source.SetCupSize(100);
+        m_source.SetCupSize(GetCupCapacity(cup));
         m_source.AddWater(25, 60);
     }
 private:
