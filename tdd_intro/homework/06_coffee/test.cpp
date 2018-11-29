@@ -86,18 +86,10 @@ public:
     }
     void CreateCoffee(const Cup cup, const Coffee coffee)
     {
-
-        m_source.SetCupSize(GetCupCapacity(cup));
-
-        if (cup == Cup::Big)
-        {
-            m_source.AddCoffee(105);
-            m_source.AddWater(35, 60);
-            return;
-        }
-
-        m_source.AddCoffee(75);
-        m_source.AddWater(25, 60);
+        auto cupCapacity = GetCupCapacity(cup);
+        m_source.SetCupSize(cupCapacity);
+        m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{3, 4}));
+        m_source.AddWater(CalculateQuantity(cupCapacity,  Part{1, 4}), 60);
     }
 private:
     ISourceOfIngredients& m_source;
