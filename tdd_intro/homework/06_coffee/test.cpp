@@ -108,9 +108,9 @@ public:
             }
             case Coffee::Latte:
             {
-                m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 4}));
-                m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{1, 2}));
-                m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 4}));
+                m_source.AddMilk(CalculateQuantity(cupCapacity,     Part{1, 4}));
+                m_source.AddCoffee(CalculateQuantity(cupCapacity,   Part{1, 2}));
+                m_source.AddMilkFoam(CalculateQuantity(cupCapacity, Part{1, 4}));
             }
         }
     }
@@ -118,19 +118,6 @@ private:
     ISourceOfIngredients& m_source;
 };
 
-
-// Architecture
-// Class CoffeMachine
-// Class-Mock SourceOfIngredients
-
-// - americano: water & coffee 1:2 or 1:3. Water temp 60C
-
-// Tests list:
-// 1. americano + 100 gram = 1 coffe
-// 2. americano + 140 gram = 1 large coffee
-// 3. AddCoffee, SetCupSize and AddWater calls once
-// 4. Check parameters
-// 5. Same for each recipe
 
 TEST(CoffeeMachine, GetPart1_2ReturnsHalf)
 {
@@ -231,8 +218,9 @@ TEST(CoffeeMachine, CallsLatteIngredients)
     CoffeeMachine cm(si);
 
     EXPECT_CALL(si, SetCupSize(_)).Times(1);
+    EXPECT_CALL(si, AddMilk(_)).Times(1);
+    EXPECT_CALL(si, AddMilkFoam(_)).Times(1);
     EXPECT_CALL(si, AddCoffee(_)).Times(1);
-    EXPECT_CALL(si, AddMilk(_)).Times(2);
 
     cm.CreateCoffee(Cup::Normal, Coffee::Latte);
 }
@@ -244,8 +232,24 @@ TEST(CoffeeMachine, CreatesSmallLatte)
     CoffeeMachine cm(si);
 
     EXPECT_CALL(si, SetCupSize(100)).Times(1);
-    EXPECT_CALL(si, AddMilk(25)).Times(2);
+    EXPECT_CALL(si, AddMilk(25)).Times(1);
+    EXPECT_CALL(si, AddMilkFoam(25)).Times(1);
     EXPECT_CALL(si, AddCoffee(50)).Times(1);
 
     cm.CreateCoffee(Cup::Normal, Coffee::Latte);
 }
+
+// - latte - milk & coffee & milk foam 1:4, 1:2, 1:4. Water temp 90C
+TEST(CoffeeMachine, CreatesBigLatte)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(140)).Times(1);
+    EXPECT_CALL(si, AddMilk(35)).Times(1);
+    EXPECT_CALL(si, AddMilkFoam(35)).Times(1);
+    EXPECT_CALL(si, AddCoffee(70)).Times(1);
+
+    cm.CreateCoffee(Cup::Big, Coffee::Latte);
+}
+
