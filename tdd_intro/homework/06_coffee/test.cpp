@@ -196,3 +196,17 @@ TEST(CoffeeMachine, CreatesSmallCappuccino)
 
     cm.CreateCoffee(Cup::Normal, Coffee::Cappuccino);
 }
+
+//- americano: water & coffee 1:3 Water temp 60C
+TEST(CoffeeMachine, CreatesBigCappuccino)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(140)).Times(1);
+    EXPECT_CALL(si, AddMilk(46)).Times(2);
+    EXPECT_CALL(si, AddCoffee(46)).Times(1);
+
+    cm.CreateCoffee(Cup::Big, Coffee::Cappuccino);
+}
+
