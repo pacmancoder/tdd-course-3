@@ -122,3 +122,17 @@ TEST(CoffeeMachine, Americano)
 
     cm.CreateCoffee(Cup::Normal, Coffee::Americano);
 }
+
+
+//- americano: water & coffee 1:3 Water temp 60C
+TEST(CoffeeMachine, CreatesBigAmericano)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, AddCoffee(105)).Times(1);
+    EXPECT_CALL(si, SetCupSize(140)).Times(1);
+    EXPECT_CALL(si, AddWater(35, 60)).Times(1);
+
+    cm.CreateCoffee(Cup::Normal, Coffee::Americano);
+}
