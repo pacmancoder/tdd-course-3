@@ -48,6 +48,14 @@ int GetCupCapacity(const Cup cup)
     return 100;
 }
 
+struct Part
+{
+    unsigned int numerator;
+    unsigned int denominator;
+};
+
+int CalculateQuantity(int, Part) { return 0; }
+
 enum class Coffee
 {
     Americano
@@ -105,6 +113,11 @@ private:
 // 3. AddCoffee, SetCupSize and AddWater calls once
 // 4. Check parameters
 // 5. Same for each recipe
+
+TEST(CoffeeMachine, GetPart1_2ReturnsHalf)
+{
+    ASSERT_EQ(60, CalculateQuantity(120, Part{1, 2}));
+}
 
 TEST(CoffeeMachine, CoffemachineIsHere)
 {
