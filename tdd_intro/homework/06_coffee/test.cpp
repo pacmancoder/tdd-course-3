@@ -62,7 +62,8 @@ int CalculateQuantity(int value, Part part)
 enum class Coffee
 {
     Americano,
-    Cappuccino
+    Cappuccino,
+    Latte
 };
 
 class MockSourceOfIngredients : public ISourceOfIngredients
@@ -90,7 +91,7 @@ public:
         auto cupCapacity = GetCupCapacity(cup);
         m_source.SetCupSize(cupCapacity);
 
-        if (coffee == Coffee::Cappuccino)
+        if (coffee == Coffee::Cappuccino | coffee == Coffee::Latte)
         {
             m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
             m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{1, 3}));
@@ -210,3 +211,16 @@ TEST(CoffeeMachine, CreatesBigCappuccino)
     cm.CreateCoffee(Cup::Big, Coffee::Cappuccino);
 }
 
+TEST(CoffeeMachine, CallsLatteIngredients)
+{
+    using namespace ::testing;
+
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(_)).Times(1);
+    EXPECT_CALL(si, AddCoffee(_)).Times(1);
+    EXPECT_CALL(si, AddMilk(_)).Times(2);
+
+    cm.CreateCoffee(Cup::Normal, Coffee::Latte);
+}
