@@ -23,12 +23,10 @@ public:
     virtual ~ISourceOfIngredients() {}
     virtual void SetCupSize(int gram) = 0;
     virtual void AddWater(int gram, int temperature) = 0;
-    virtual void AddSugar(int gram) = 0;
     virtual void AddCoffee(int gram) = 0;
     virtual void AddMilk(int gram) = 0;
     virtual void AddMilkFoam(int gram) = 0;
     virtual void AddChocolate(int gram) = 0;
-    virtual void AddCream(int gram) = 0;
 };
 
 
@@ -72,21 +70,18 @@ class MockSourceOfIngredients : public ISourceOfIngredients
 public:
     MOCK_METHOD1(SetCupSize, void(int));
     MOCK_METHOD2(AddWater, void(int, int));
-    MOCK_METHOD1(AddSugar, void(int));
     MOCK_METHOD1(AddCoffee, void(int));
     MOCK_METHOD1(AddMilk, void(int));
     MOCK_METHOD1(AddMilkFoam, void(int));
     MOCK_METHOD1(AddChocolate, void(int));
-    MOCK_METHOD1(AddCream, void(int));
 };
 
 class CoffeeMachine
 {
 public:
-    CoffeeMachine(ISourceOfIngredients& source) : m_source(source)
-    {
+    CoffeeMachine(ISourceOfIngredients& source)
+        : m_source(source) {}
 
-    }
     void CreateCoffee(const Cup cup, const Coffee coffee)
     {
         auto cupCapacity = GetCupCapacity(cup);
