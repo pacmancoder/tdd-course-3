@@ -122,6 +122,11 @@ TEST(CoffeeMachine, GetPart1_2ReturnsHalf)
     ASSERT_EQ(60, CalculateQuantity(120, Part{1, 2}));
 }
 
+TEST(CoffeeMachine, GetPartFloorsResult)
+{
+    ASSERT_EQ(3, CalculateQuantity(5, Part{2, 3}));
+}
+
 TEST(CoffeeMachine, CoffemachineIsHere)
 {
     MockSourceOfIngredients si;
