@@ -91,16 +91,28 @@ public:
         auto cupCapacity = GetCupCapacity(cup);
         m_source.SetCupSize(cupCapacity);
 
-        if (coffee == Coffee::Cappuccino | coffee == Coffee::Latte)
+        switch (coffee)
         {
-            m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
-            m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{1, 3}));
-            m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
-            return;
+            case Coffee::Americano:
+            {
+                m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{3, 4}));
+                m_source.AddWater(CalculateQuantity(cupCapacity,  Part{1, 4}), 60);
+                return;
+            }
+            case Coffee::Cappuccino:
+            {
+                m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
+                m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{1, 3}));
+                m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
+                return;
+            }
+            case Coffee::Latte:
+            {
+                m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 4}));
+                m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{1, 2}));
+                m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 4}));
+            }
         }
-
-        m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{3, 4}));
-        m_source.AddWater(CalculateQuantity(cupCapacity,  Part{1, 4}), 60);
     }
 private:
     ISourceOfIngredients& m_source;
@@ -185,7 +197,7 @@ TEST(CoffeeMachine, CallsCappuccinoIngredients)
     cm.CreateCoffee(Cup::Normal, Coffee::Cappuccino);
 }
 
-//- americano: water & coffee 1:3 Water temp 60C
+// - cappuccino - milk & coffee & milk foam 1:3, 1:3, 1:3. Water temp 80C
 TEST(CoffeeMachine, CreatesSmallCappuccino)
 {
     MockSourceOfIngredients si;
@@ -198,7 +210,7 @@ TEST(CoffeeMachine, CreatesSmallCappuccino)
     cm.CreateCoffee(Cup::Normal, Coffee::Cappuccino);
 }
 
-//- americano: water & coffee 1:3 Water temp 60C
+// - cappuccino - milk & coffee & milk foam 1:3, 1:3, 1:3. Water temp 80C
 TEST(CoffeeMachine, CreatesBigCappuccino)
 {
     MockSourceOfIngredients si;
@@ -221,6 +233,19 @@ TEST(CoffeeMachine, CallsLatteIngredients)
     EXPECT_CALL(si, SetCupSize(_)).Times(1);
     EXPECT_CALL(si, AddCoffee(_)).Times(1);
     EXPECT_CALL(si, AddMilk(_)).Times(2);
+
+    cm.CreateCoffee(Cup::Normal, Coffee::Latte);
+}
+
+// - latte - milk & coffee & milk foam 1:4, 1:2, 1:4. Water temp 90C
+TEST(CoffeeMachine, CreatesSmallLatte)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(100)).Times(1);
+    EXPECT_CALL(si, AddMilk(25)).Times(2);
+    EXPECT_CALL(si, AddCoffee(50)).Times(1);
 
     cm.CreateCoffee(Cup::Normal, Coffee::Latte);
 }
