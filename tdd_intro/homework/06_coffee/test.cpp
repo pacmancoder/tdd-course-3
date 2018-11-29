@@ -116,9 +116,9 @@ public:
             }
             case Coffee::Marochino:
             {
-                m_source.AddChocolate(CalculateQuantity(cupCapacity, Part{1, 1}));
-                m_source.AddCoffee(CalculateQuantity(cupCapacity,    Part{1, 1}));
-                m_source.AddMilk(CalculateQuantity(cupCapacity,      Part{1, 1}));
+                m_source.AddChocolate(CalculateQuantity(cupCapacity, Part{1, 4}));
+                m_source.AddCoffee(CalculateQuantity(cupCapacity,    Part{1, 4}));
+                m_source.AddMilk(CalculateQuantity(cupCapacity,      Part{1, 4}));
                 return;
             }
         }
@@ -277,3 +277,32 @@ TEST(CoffeeMachine, CallsMarochinoIngredients)
 
     cm.CreateCoffee(Cup::Normal, Coffee::Marochino);
 }
+
+// - marochino - chocolate & coffee & milk foam, 1:4, 1:4, 1:4 and 1:4 is empty
+TEST(CoffeeMachine, CreatesSmallMarochino)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(100)).Times(1);
+    EXPECT_CALL(si, AddChocolate(25)).Times(1);
+    EXPECT_CALL(si, AddCoffee(25)).Times(1);
+    EXPECT_CALL(si, AddMilk(25)).Times(1);
+
+    cm.CreateCoffee(Cup::Normal, Coffee::Marochino);
+}
+
+// - marochino - chocolate & coffee & milk foam, 1:4, 1:4, 1:4 and 1:4 is empty
+TEST(CoffeeMachine, CreatesBigMarochino)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(140)).Times(1);
+    EXPECT_CALL(si, AddChocolate(35)).Times(1);
+    EXPECT_CALL(si, AddCoffee(35)).Times(1);
+    EXPECT_CALL(si, AddMilk(35)).Times(1);
+
+    cm.CreateCoffee(Cup::Big, Coffee::Marochino);
+}
+
