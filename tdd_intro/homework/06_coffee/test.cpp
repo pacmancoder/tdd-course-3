@@ -38,8 +38,13 @@ enum class Cup
     Big
 };
 
-int GetCupCapacity(const Cup)
+int GetCupCapacity(const Cup cup)
 {
+    if (cup == Cup::Big)
+    {
+        return 140;
+    }
+
     return 100;
 }
 
@@ -70,8 +75,17 @@ public:
     }
     void CreateCoffee(const Cup cup, const Coffee coffee)
     {
-        m_source.AddCoffee(75);
+
         m_source.SetCupSize(GetCupCapacity(cup));
+
+        if (cup == Cup::Big)
+        {
+            m_source.AddCoffee(105);
+            m_source.AddWater(35, 60);
+            return;
+        }
+
+        m_source.AddCoffee(75);
         m_source.AddWater(25, 60);
     }
 private:
@@ -134,5 +148,5 @@ TEST(CoffeeMachine, CreatesBigAmericano)
     EXPECT_CALL(si, SetCupSize(140)).Times(1);
     EXPECT_CALL(si, AddWater(35, 60)).Times(1);
 
-    cm.CreateCoffee(Cup::Normal, Coffee::Americano);
+    cm.CreateCoffee(Cup::Big, Coffee::Americano);
 }
