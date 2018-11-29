@@ -54,7 +54,10 @@ struct Part
     unsigned int denominator;
 };
 
-int CalculateQuantity(int, Part) { return 0; }
+int CalculateQuantity(int value, Part part)
+{
+    return value * part.numerator / part.denominator;
+}
 
 enum class Coffee
 {
