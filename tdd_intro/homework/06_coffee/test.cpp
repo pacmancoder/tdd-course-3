@@ -92,9 +92,9 @@ public:
 
         if (coffee == Coffee::Cappuccino)
         {
-            m_source.AddMilk(0);
-            m_source.AddCoffee(0);
-            m_source.AddMilk(0);
+            m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
+            m_source.AddCoffee(CalculateQuantity(cupCapacity, Part{1, 3}));
+            m_source.AddMilk(CalculateQuantity(cupCapacity,   Part{1, 3}));
             return;
         }
 
@@ -180,6 +180,19 @@ TEST(CoffeeMachine, CallsCappuccinoIngredients)
     EXPECT_CALL(si, SetCupSize(_)).Times(1);
     EXPECT_CALL(si, AddCoffee(_)).Times(1);
     EXPECT_CALL(si, AddMilk(_)).Times(2);
+
+    cm.CreateCoffee(Cup::Normal, Coffee::Cappuccino);
+}
+
+//- americano: water & coffee 1:3 Water temp 60C
+TEST(CoffeeMachine, CreatesSmallCappuccino)
+{
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(100)).Times(1);
+    EXPECT_CALL(si, AddMilk(33)).Times(2);
+    EXPECT_CALL(si, AddCoffee(33)).Times(1);
 
     cm.CreateCoffee(Cup::Normal, Coffee::Cappuccino);
 }
