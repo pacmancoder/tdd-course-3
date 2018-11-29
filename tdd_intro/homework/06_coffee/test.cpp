@@ -50,8 +50,8 @@ int GetCupCapacity(const Cup cup)
 
 struct Part
 {
-    unsigned int numerator;
-    unsigned int denominator;
+    int numerator;
+    int denominator;
 };
 
 int CalculateQuantity(int value, Part part)
@@ -129,26 +129,22 @@ TEST(CoffeeMachine, GetPartFloorsResult)
     ASSERT_EQ(3, CalculateQuantity(5, Part{2, 3}));
 }
 
-TEST(CoffeeMachine, CoffemachineIsHere)
+TEST(CoffeeMachine, CallsAmericanoIngredientsThings)
 {
-    MockSourceOfIngredients si;
-    CoffeeMachine cm(si);
-}
+    using namespace ::testing;
 
-TEST(CoffeeMachine, CallsImportantThings)
-{
     MockSourceOfIngredients si;
     CoffeeMachine cm(si);
 
-    EXPECT_CALL(si, AddCoffee(::testing::_)).Times(1);
-    EXPECT_CALL(si, SetCupSize(::testing::_)).Times(1);
-    EXPECT_CALL(si, AddWater(::testing::_, ::testing::_)).Times(1);
+    EXPECT_CALL(si, AddCoffee(_)).Times(1);
+    EXPECT_CALL(si, SetCupSize(_)).Times(1);
+    EXPECT_CALL(si, AddWater(_, _)).Times(1);
 
     cm.CreateCoffee(Cup::Normal, Coffee::Americano);
 }
 
 //- americano: water & coffee 1:3 Water temp 60C
-TEST(CoffeeMachine, Americano)
+TEST(CoffeeMachine, CreatesSmallAmericano)
 {
     MockSourceOfIngredients si;
     CoffeeMachine cm(si);
@@ -176,12 +172,14 @@ TEST(CoffeeMachine, CreatesBigAmericano)
 
 TEST(CoffeeMachine, CallsCappuccinoIngredients)
 {
+    using namespace ::testing;
+
     MockSourceOfIngredients si;
     CoffeeMachine cm(si);
 
-    EXPECT_CALL(si, SetCupSize(::testing::_)).Times(1);
-    EXPECT_CALL(si, AddCoffee(::testing::_)).Times(1);
-    EXPECT_CALL(si, AddMilk(::testing::_)).Times(2);
+    EXPECT_CALL(si, SetCupSize(_)).Times(1);
+    EXPECT_CALL(si, AddCoffee(_)).Times(1);
+    EXPECT_CALL(si, AddMilk(_)).Times(2);
 
     cm.CreateCoffee(Cup::Normal, Coffee::Cappuccino);
 }
