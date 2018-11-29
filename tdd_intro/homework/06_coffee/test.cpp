@@ -63,7 +63,8 @@ enum class Coffee
 {
     Americano,
     Cappuccino,
-    Latte
+    Latte,
+    Marochino
 };
 
 class MockSourceOfIngredients : public ISourceOfIngredients
@@ -111,6 +112,14 @@ public:
                 m_source.AddMilk(CalculateQuantity(cupCapacity,     Part{1, 4}));
                 m_source.AddCoffee(CalculateQuantity(cupCapacity,   Part{1, 2}));
                 m_source.AddMilkFoam(CalculateQuantity(cupCapacity, Part{1, 4}));
+                return;
+            }
+            case Coffee::Marochino:
+            {
+                m_source.AddChocolate(CalculateQuantity(cupCapacity, Part{1, 1}));
+                m_source.AddCoffee(CalculateQuantity(cupCapacity,    Part{1, 1}));
+                m_source.AddMilk(CalculateQuantity(cupCapacity,      Part{1, 1}));
+                return;
             }
         }
     }
@@ -253,3 +262,18 @@ TEST(CoffeeMachine, CreatesBigLatte)
     cm.CreateCoffee(Cup::Big, Coffee::Latte);
 }
 
+// - marochino - chocolate & coffee & milk foam, 1:4, 1:4, 1:4 and 1:4 is empty
+TEST(CoffeeMachine, CallsMarochinoIngredients)
+{
+    using namespace ::testing;
+
+    MockSourceOfIngredients si;
+    CoffeeMachine cm(si);
+
+    EXPECT_CALL(si, SetCupSize(_)).Times(1);
+    EXPECT_CALL(si, AddChocolate(_)).Times(1);
+    EXPECT_CALL(si, AddCoffee(_)).Times(1);
+    EXPECT_CALL(si, AddMilk(_)).Times(1);
+
+    cm.CreateCoffee(Cup::Normal, Coffee::Marochino);
+}
